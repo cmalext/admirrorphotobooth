@@ -26,7 +26,7 @@
 <!-- Video Background -->
 <video autoplay muted loop playsinline 
  class="fixed top-0 left-0 w-full h-full object-cover -z-10 opacity-20">
-  <source src="image/chaither.mp4" type="video/mp4">
+  <source src="image/chaither2.mp4" type="video/mp4">
   
 </video>
 
@@ -89,14 +89,30 @@
   <div class="flex flex-col items-center text-center max-w-3xl mx-auto">
     <!-- Logo/Brand Section -->
     <div class="relative mb-6">
-      <img src="image/nalbu.png" alt="Camera Icon" class="w-40 h-40 mr-3 inline-block">
-      <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-accent rounded-full flex items-center justify-center">
-        <i class="fas fa-camera text-white text-xs"></i>
-      </div>
-    </div>
+  <img src="image/nalbu.png" alt="Camera Icon" class="w-50 h-50 mr-3 inline-block">
+  <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-accent rounded-full flex items-center justify-center jump">
+    <i class="fas fa-camera text-white text-xs"></i>
+  </div>
+</div>
+
+        <style>
+        @keyframes jump {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+        }
+
+        .jump {
+          animation: jump 0.6s infinite ease-in-out;
+        }
+        </style>
+
 
     <h1 class="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent leading-tight">
-      Mirror Photo Booth
+      
     </h1>
     <p class="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed">
       Experience the magic of our state-of-the-art mirror photo booth. 
@@ -108,7 +124,7 @@
         <i class="fas fa-calendar-check mr-2"></i>
         Book Your Event
       </a>
-      <a href="#gallery" class="border-2 border-primary text-primary px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300 text-center">
+      <a href="#gallery" class="bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-center">
         <i class="fas fa-images mr-2"></i>
         View Gallery
       </a>
@@ -204,7 +220,7 @@
 </section>
 
 <!-- Pricing Section -->
-<section id="pricing" class="py-20 bg-gradient-to-br from-amber-50 to-orange-50">
+<section id="pricing" class="py-20 bg-gradient-to-br from-amber-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
       <h2 class="text-4xl font-bold text-gray-800 mb-4">Choose Your Package</h2>
@@ -215,37 +231,23 @@
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Basic Package -->
-      <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
+      <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl hover:scale-105 transition-transform duration-300">
         <div class="text-center mb-8">
           <h3 class="text-2xl font-bold text-gray-800 mb-4">Basic</h3>
           <div class="text-4xl font-bold text-primary mb-2">$299</div>
           <div class="text-gray-600">per event</div>
         </div>
         <ul class="space-y-4 mb-8">
-          <li class="flex items-center">
-            <i class="fas fa-check text-green-500 mr-3"></i>
-            <span>2 hours of photo booth time</span>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-check text-green-500 mr-3"></i>
-            <span>Unlimited photos</span>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-check text-green-500 mr-3"></i>
-            <span>Basic props included</span>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-check text-green-500 mr-3"></i>
-            <span>Digital copies</span>
-          </li>
+          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>2 hours of photo booth time</span></li>
+          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Unlimited photos</span></li>
+          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Basic props included</span></li>
+          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Digital copies</span></li>
         </ul>
-        <a href="#contact" class="w-full bg-gray-200 text-gray-800 py-3 rounded-full font-semibold text-center block hover:bg-gray-300 transition-colors duration-300">
-          Book Basic
-        </a>
+        <a href="#contact" class="w-full bg-gray-200 text-gray-800 py-3 rounded-full font-semibold text-center block hover:bg-gray-300 transition-colors duration-300">Book Basic</a>
       </div>
       
       <!-- Premium Package -->
-      <div class="bg-gradient-to-br from-primary to-secondary rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 transform scale-105">
+      <div class="bg-gradient-to-br from-primary to-secondary rounded-2xl shadow-lg p-8 hover:shadow-xl hover:scale-110 transition-transform duration-300">
         <div class="text-center mb-8">
           <div class="bg-white text-primary px-4 py-1 rounded-full text-sm font-semibold inline-block mb-4">Most Popular</div>
           <h3 class="text-2xl font-bold text-white mb-4">Premium</h3>
@@ -253,64 +255,30 @@
           <div class="text-white/80">per event</div>
         </div>
         <ul class="space-y-4 mb-8">
-          <li class="flex items-center">
-            <i class="fas fa-check text-white mr-3"></i>
-            <span class="text-white">4 hours of photo booth time</span>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-check text-white mr-3"></i>
-            <span class="text-white">Unlimited photos & prints</span>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-check text-white mr-3"></i>
-            <span class="text-white">Premium props & backdrops</span>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-check text-white mr-3"></i>
-            <span class="text-white">Custom photo design</span>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-check text-white mr-3"></i>
-            <span class="text-white">Social media sharing</span>
-          </li>
+          <li class="flex items-center"><i class="fas fa-check text-white mr-3"></i> <span class="text-white">4 hours of photo booth time</span></li>
+          <li class="flex items-center"><i class="fas fa-check text-white mr-3"></i> <span class="text-white">Unlimited photos & prints</span></li>
+          <li class="flex items-center"><i class="fas fa-check text-white mr-3"></i> <span class="text-white">Premium props & backdrops</span></li>
+          <li class="flex items-center"><i class="fas fa-check text-white mr-3"></i> <span class="text-white">Custom photo design</span></li>
+          <li class="flex items-center"><i class="fas fa-check text-white mr-3"></i> <span class="text-white">Social media sharing</span></li>
         </ul>
-        <a href="#contact" class="w-full bg-white text-primary py-3 rounded-full font-semibold text-center block hover:bg-gray-100 transition-colors duration-300">
-          Book Premium
-        </a>
+        <a href="#contact" class="w-full bg-white text-primary py-3 rounded-full font-semibold text-center block hover:bg-gray-100 transition-colors duration-300">Book Premium</a>
       </div>
       
       <!-- Luxury Package -->
-      <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
+      <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl hover:scale-105 transition-transform duration-300">
         <div class="text-center mb-8">
           <h3 class="text-2xl font-bold text-gray-800 mb-4">Luxury</h3>
           <div class="text-4xl font-bold text-primary mb-2">$799</div>
           <div class="text-gray-600">per event</div>
         </div>
         <ul class="space-y-4 mb-8">
-          <li class="flex items-center">
-            <i class="fas fa-check text-green-500 mr-3"></i>
-            <span>6 hours of photo booth time</span>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-check text-green-500 mr-3"></i>
-            <span>Everything in Premium</span>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-check text-green-500 mr-3"></i>
-            <span>Professional attendant</span>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-check text-green-500 mr-3"></i>
-            <span>Custom backdrop design</span>
-          </li>
-          <li class="flex items-center">
-            <i class="fas fa-check text-green-500 mr-3"></i>
-            <span>Photo album included</span>
-          </li>
+          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>6 hours of photo booth time</span></li>
+          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Everything in Premium</span></li>
+          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Professional attendant</span></li>
+          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Custom backdrop design</span></li>
+          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Photo album included</span></li>
         </ul>
-        <a href="#contact" class="w-full bg-gray-200 text-gray-800 py-3 rounded-full font-semibold text-center block hover:bg-gray-300 transition-colors duration-300">
-          Book Luxury
-        </a>
+        <a href="#contact" class="w-full bg-gray-200 text-gray-800 py-3 rounded-full font-semibold text-center block hover:bg-gray-300 transition-colors duration-300">Book Luxury</a>
       </div>
     </div>
   </div>
@@ -463,40 +431,57 @@
     
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
       <!-- Contact Form -->
+       
       <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
         <h3 class="text-2xl font-bold mb-6">Send us a Message</h3>
-        <form class="space-y-6">
+        @if (session('status'))
+          <div class="mb-4 rounded-lg bg-green-600/20 border border-green-600/30 text-green-200 px-4 py-3">
+            {{ session('status') }}
+          </div>
+        @endif
+        @if ($errors->any())
+          <div class="mb-4 rounded-lg bg-red-600/20 border border-red-600/30 text-red-200 px-4 py-3">
+            <ul class="list-disc list-inside">
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+        <form method="POST" action="{{ route('messages.store') }}" class="space-y-6">
+          @csrf
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-medium mb-2">First Name</label>
-              <input type="text" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-primary">
+              <input name="first_name" value="{{ old('first_name') }}" type="text" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-primary" required>
             </div>
             <div>
               <label class="block text-sm font-medium mb-2">Last Name</label>
-              <input type="text" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-primary">
+              <input name="last_name" value="{{ old('last_name') }}" type="text" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-primary" required>
             </div>
           </div>
           <div>
             <label class="block text-sm font-medium mb-2">Email</label>
-            <input type="email" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-primary">
+            <input name="email" value="{{ old('email') }}" type="email" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-primary" required>
           </div>
           <div>
             <label class="block text-sm font-medium mb-2">Phone</label>
-            <input type="tel" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-primary">
+            <input name="phone" value="{{ old('phone') }}" type="tel" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-primary">
           </div>
           <div>
-            <label class="block text-sm font-medium mb-2">Event Type</label>
-            <select class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-primary">
-              <option>Wedding</option>
-              <option>Corporate Event</option>
-              <option>Birthday Party</option>
-              <option>Graduation</option>
-              <option>Other</option>
-            </select>
+          <label class="block text-sm font-medium mb-2">Event Type</label>
+          <select id="eventType" name="event_type"
+            class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-500 text-white focus:outline-none focus:border-primary" required>
+                  <option value="Wedding" {{ old('event_type')==='Wedding' ? 'selected' : '' }}>Wedding</option>
+                  <option value="Corporate Event" {{ old('event_type')==='Corporate Event' ? 'selected' : '' }}>Corporate Event</option>
+                  <option value="Birthday Party" {{ old('event_type')==='Birthday Party' ? 'selected' : '' }}>Birthday Party</option>
+                  <option value="Graduation" {{ old('event_type')==='Graduation' ? 'selected' : '' }}>Graduation</option>
+                  <option value="Other" {{ old('event_type')==='Other' ? 'selected' : '' }}>Other</option>
+          </select>
           </div>
           <div>
             <label class="block text-sm font-medium mb-2">Message</label>
-            <textarea rows="4" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-primary"></textarea>
+            <textarea name="message" rows="4" class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-primary" required>{{ old('message') }}</textarea>
           </div>
           <button type="submit" class="w-full bg-gradient-to-r from-primary to-secondary text-white py-4 rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
             Send Message
@@ -548,13 +533,13 @@
         <div class="pt-6">
           <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
           <div class="flex space-x-4">
-            <a href="#" class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300">
+            <a href= " https://www.facebook.com/profile.php?id=61565882637150    " class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300">
               <i class="fab fa-facebook-f text-white"></i>
             </a>
-            <a href="#" class="w-10 h-10 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300">
+            <a href="https://www.instagram.com/" class="w-10 h-10 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300">
               <i class="fab fa-instagram text-white"></i>
             </a>
-            <a href="#" class="w-10 h-10 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300">
+            <a href="https://x.com/" class="w-10 h-10 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300">
               <i class="fab fa-twitter text-white"></i>
             </a>
           </div>
