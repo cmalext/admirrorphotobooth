@@ -6,77 +6,158 @@
   <title>AD - Mirror Photo Booth Cebu City</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            primary: '#482803ff',
-            secondary: '#fd7d14ff',
-            accent: '#4b2e04ff',
-           
+            primary: '#8a4813ff',
+            secondary: '#e97313ff',
+            accent: '#f39c12ff',
+          },
+          fontFamily: {
+            'inter': ['Inter', 'sans-serif'],
+          },
+          animation: {
+            'float-slow': 'float-slow 8s ease-in-out infinite',
+            'float-medium': 'float-medium 6s ease-in-out infinite',
+            'float-fast': 'float-fast 4s ease-in-out infinite',
+            'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
+            'slide-in-left': 'slide-in-left 0.8s ease-out forwards',
+            'slide-in-right': 'slide-in-right 0.8s ease-out forwards',
+            'slide-in-up': 'slide-in-up 0.8s ease-out forwards',
+            'fade-in-scale': 'fade-in-scale 0.8s ease-out forwards',
+            'rotate-3d': 'rotate-3d 20s linear infinite',
+            'morph-shape': 'morph-shape 8s ease-in-out infinite',
           }
         }
       }
     }
   </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .parallax-container { perspective: 1000px; transform-style: preserve-3d; }
+    .parallax-element { will-change: transform; }
+    .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+    .animate-on-scroll.animate-in { opacity: 1; transform: translateY(0); }
+    .navbar-hidden { transform: translateY(-100%); }
+    .navbar-scrolled { background: rgba(255, 255, 255, 0.98) !important; backdrop-filter: blur(20px); }
+    .glass-morphism { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2); }
+    .hover-lift { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .hover-lift:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); }
+    .navbar-click-animate {
+      animation: navbarClickScale 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    @keyframes navbarClickScale {
+      0% { transform: scale(1); background: transparent; }
+      30% { transform: scale(1.15); background: rgba(255,255,255,0.15); }
+      60% { transform: scale(0.95); background: rgba(255,255,255,0.10); }
+      100% { transform: scale(1); background: transparent; }
+    }
+  </style>
 </head>
-<body class="relative min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
+<body class="relative min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 overflow-x-hidden font-inter">
+
+<!-- Advanced Parallax & Animated Shapes -->
+<div class="pointer-events-none select-none parallax-container">
+  <!-- Parallax Layer 1: Floating Orbs -->
+  <div class="parallax-element absolute top-10 left-0 w-40 h-40 bg-gradient-to-br from-primary to-secondary opacity-30 rounded-full blur-2xl animate-float-slow z-0" data-speed="0.3"></div>
+  <div class="parallax-element absolute top-1/2 right-0 w-32 h-32 bg-gradient-to-br from-accent to-primary opacity-20 rounded-full blur-2xl animate-float-fast z-0" data-speed="0.5"></div>
+  <div class="parallax-element absolute bottom-0 left-1/3 w-56 h-56 bg-gradient-to-br from-secondary to-accent opacity-20 rounded-full blur-3xl animate-float-medium z-0" data-speed="0.2"></div>
+  
+  <!-- Morphing Shapes -->
+  <div class="parallax-element absolute top-1/4 right-1/4 w-24 h-24 bg-gradient-to-br from-primary to-accent opacity-20 animate-morph-shape z-0" data-speed="0.4"></div>
+  <div class="parallax-element absolute bottom-1/4 right-1/3 w-20 h-20 bg-gradient-to-br from-secondary to-primary opacity-15 animate-rotate-3d z-0" data-speed="0.6"></div>
+  
+  <!-- Mouse Parallax Elements -->
+  <div class="mouse-parallax absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-br from-accent to-secondary opacity-25 rounded-full animate-pulse-glow z-0" data-mouse-speed="15"></div>
+  <div class="mouse-parallax absolute bottom-1/3 right-1/4 w-12 h-12 bg-gradient-to-br from-primary to-accent opacity-20 rounded-full animate-float-slow z-0" data-mouse-speed="20"></div>
+  
+  <!-- SVG Decorative Elements -->
+  <svg class="parallax-element absolute top-20 left-1/3 w-20 h-20 opacity-20 animate-float-medium z-0" viewBox="0 0 64 64" fill="none" data-speed="0.3">
+    <path d="M32 58s26-15.9 26-34A14 14 0 0 0 32 10a14 14 0 0 0-26 14c0 18.1 26 34 26 34z" fill="#8a4813"/>
+  </svg>
+  
+  <svg class="parallax-element absolute bottom-20 right-1/4 w-16 h-16 opacity-15 animate-rotate-3d z-0" viewBox="0 0 64 64" fill="none" data-speed="0.4">
+    <circle cx="32" cy="32" r="28" stroke="#e97313" stroke-width="4" fill="none"/>
+    <circle cx="32" cy="32" r="20" stroke="#f39c12" stroke-width="2" fill="none"/>
+  </svg>
+</div>
 
 <!-- Video Background -->
 <video autoplay muted loop playsinline 
  class="fixed top-0 left-0 w-full h-full object-cover -z-10 opacity-20">
-  <source src="image/chaither2.mp4" type="video/mp4">
+  <source src="image/chaither3.mp4" type="video/mp4">
   
 </video>
 
-<!-- Navbar -->
-<nav class="bg-white/95 backdrop-blur-sm shadow-lg sticky top-0 z-50">
+<!-- Enhanced Navbar with Glass Morphism -->
+<nav class="glass-morphism bg-white/90 backdrop-blur-xl shadow-2xl sticky top-0 z-50 transition-all duration-500 ease-out">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
+    <div class="flex items-center justify-between h-20">
       
-      <!-- Logo -->
-      <div class="flex items-center">
-        <i class="fas fa-camera-retro text-3xl text-primary mr-3"></i>
-        <a href="#" class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+      <!-- Enhanced Logo with Animation -->
+      <div class="flex items-center group">
+        <div class="relative">
+          <i class="fas fa-camera-retro text-4xl text-primary mr-3 group-hover:scale-110 transition-transform duration-300 animate-pulse-glow"></i>
+          <div class="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full animate-pulse"></div>
+        </div>
+        <a href="#" class="text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent hover:scale-105 transition-transform duration-300">
           AD
         </a>
       </div>
 
-      <!-- Menu (Desktop) -->
+      <!-- Enhanced Menu (Desktop) -->
       <div class="hidden md:flex space-x-8">
-        <a href="#home" class="text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Home</a>
-        <a href="#features" class="text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Features</a>
-        <a href="#pricing" class="text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Pricing</a>
-        <a href="#gallery" class="text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Gallery</a>
-        <a href="#contact" class="text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Contact</a>
-      </div>
-
-      <!-- CTA Button -->
-      <div class="hidden md:block">
-        <a href="#contact" class="bg-gradient-to-r from-primary to-secondary text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
-          Book Now
+        <a href="#home" class="text-gray-700 hover:text-primary transition-all duration-300 font-medium relative group">
+          Home
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#features" class="text-gray-700 hover:text-primary transition-all duration-300 font-medium relative group">
+          Features
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#pricing" class="text-gray-700 hover:text-primary transition-all duration-300 font-medium relative group">
+          Pricing
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#gallery" class="text-gray-700 hover:text-primary transition-all duration-300 font-medium relative group">
+          Gallery
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <a href="#contact" class="text-gray-700 hover:text-primary transition-all duration-300 font-medium relative group">
+          Contact
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300"></span>
         </a>
       </div>
 
-      <!-- Mobile Burger Button -->
-      <button class="md:hidden flex flex-col space-y-1.5 focus:outline-none" id="menu-btn">
-        <span class="block w-6 h-0.5 bg-primary"></span>
-        <span class="block w-6 h-0.5 bg-primary"></span>
-        <span class="block w-6 h-0.5 bg-primary"></span>
+      <!-- Enhanced CTA Button -->
+      <div class="hidden md:block">
+        <a href="#contact" class="bg-gradient-to-r from-primary via-secondary to-accent text-white px-8 py-3 rounded-full font-semibold hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <span class="relative z-10">Book Now</span>
+          <div class="absolute inset-0 bg-gradient-to-r from-accent via-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </a>
+      </div>
+
+      <!-- Enhanced Mobile Burger Button -->
+      <button class="md:hidden flex flex-col space-y-1.5 focus:outline-none group" id="menu-btn">
+        <span class="block w-6 h-0.5 bg-primary group-hover:bg-secondary transition-all duration-300"></span>
+        <span class="block w-6 h-0.5 bg-primary group-hover:bg-secondary transition-all duration-300"></span>
+        <span class="block w-6 h-0.5 bg-primary group-hover:bg-secondary transition-all duration-300"></span>
       </button>
 
     </div>
 
-    <!-- Mobile Menu -->
-    <div class="hidden md:hidden pb-4" id="mobile-menu">
-      <div class="flex flex-col space-y-3">
-        <a href="#home" class="text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Home</a>
-        <a href="#features" class="text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Features</a>
-        <a href="#pricing" class="text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Pricing</a>
-        <a href="#gallery" class="text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Gallery</a>
-        <a href="#contact" class="text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Contact</a>
-        <a href="#contact" class="bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-full font-semibold text-center">
+    <!-- Enhanced Mobile Menu -->
+    <div class="hidden md:hidden pb-6" id="mobile-menu">
+      <div class="flex flex-col space-y-4 pt-4 border-t border-gray-200/20">
+        <a href="#home" class="text-gray-700 hover:text-primary transition-all duration-300 font-medium py-2 px-4 rounded-lg hover:bg-white/20">Home</a>
+        <a href="#features" class="text-gray-700 hover:text-primary transition-all duration-300 font-medium py-2 px-4 rounded-lg hover:bg-white/20">Features</a>
+        <a href="#pricing" class="text-gray-700 hover:text-primary transition-all duration-300 font-medium py-2 px-4 rounded-lg hover:bg-white/20">Pricing</a>
+        <a href="#gallery" class="text-gray-700 hover:text-primary transition-all duration-300 font-medium py-2 px-4 rounded-lg hover:bg-white/20">Gallery</a>
+        <a href="#contact" class="text-gray-700 hover:text-primary transition-all duration-300 font-medium py-2 px-4 rounded-lg hover:bg-white/20">Contact</a>
+        <a href="#contact" class="bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 rounded-full font-semibold text-center hover:shadow-lg transform hover:scale-105 transition-all duration-300">
           Book Now
         </a>
       </div>
@@ -84,136 +165,174 @@
   </div>
 </nav>
 
-<!-- Hero Section -->
-<section id="home" class="relative min-h-screen flex items-center justify-center px-4">
-  <div class="flex flex-col items-center text-center max-w-3xl mx-auto">
-    <!-- Logo/Brand Section -->
-    <div class="relative mb-6">
-  <img src="image/nalbu.png" alt="Camera Icon" class="w-50 h-50 mr-3 inline-block">
-  <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-accent rounded-full flex items-center justify-center jump">
-    <i class="fas fa-camera text-white text-xs"></i>
-  </div>
-</div>
+<!-- Enhanced Hero Section with Parallax -->
+<section id="home" class="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
+  <div class="flex flex-col items-center text-center max-w-4xl mx-auto relative z-10">
+    
+    <!-- Enhanced Logo/Brand Section with 3D Effects -->
+    <div class="relative mb-8 group animate-on-scroll" data-aos="fade-up" data-aos-duration="1000">
+      <div class="relative inline-block transform-gpu hover:rotate-y-12 transition-transform duration-700">
+        <img src="image/nalbu.png" alt="AD Logo" class="w-48 h-48 md:w-56 md:h-56 inline-block drop-shadow-2xl hover:scale-110 transition-all duration-500">
+        <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-accent to-secondary rounded-full flex items-center justify-center animate-pulse-glow shadow-lg">
+          <i class="fas fa-camera text-white text-sm"></i>
+        </div>
+        <!-- Glowing Ring Effect -->
+        <div class="absolute inset-0 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 blur-xl scale-110 group-hover:scale-125 transition-transform duration-700"></div>
+      </div>
+    </div>
 
-        <style>
-        @keyframes jump {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-5px);
-          }
-        }
-
-        .jump {
-          animation: jump 0.6s infinite ease-in-out;
-        }
-        </style>
-
-
-    <h1 class="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent leading-tight">
-      
+    <!-- Enhanced Typography with Staggered Animation -->
+    <h1 class="text-6xl md:text-7xl lg:text-8xl font-black mb-8 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent leading-tight animate-on-scroll" data-aos="fade-up" data-aos-delay="200">
+    
+      <span class="block text-4xl md:text-5xl lg:text-6xl mt-4 font-bold">Mirror Photo Booth</span>
     </h1>
-    <p class="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed">
+    
+    <p class="text-xl md:text-2xl lg:text-3xl text-gray-700 mb-12 leading-relaxed max-w-3xl animate-on-scroll" data-aos="fade-up" data-aos-delay="400">
       Experience the magic of our state-of-the-art mirror photo booth. 
       Perfect for weddings, corporate events, and special celebrations in Cebu City.
     </p>
 
-    <div class="flex flex-col sm:flex-row gap-4">
-      <a href="#contact" class="bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-center">
-        <i class="fas fa-calendar-check mr-2"></i>
-        Book Your Event
+    <!-- Enhanced CTA Buttons with Hover Effects -->
+    <div class="flex flex-col sm:flex-row gap-6 animate-on-scroll" data-aos="fade-up" data-aos-delay="600">
+      <a href="#contact" class="group relative overflow-hidden bg-gradient-to-r from-primary via-secondary to-accent text-white px-10 py-5 rounded-full text-xl font-bold hover:shadow-2xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-500 text-center">
+        <span class="relative z-10 flex items-center justify-center">
+          <i class="fas fa-calendar-check mr-3 text-2xl group-hover:rotate-12 transition-transform duration-300"></i>
+          Book Your Event
+        </span>
+        <div class="absolute inset-0 bg-gradient-to-r from-accent via-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="absolute inset-0 bg-white/20 rounded-full blur-xl scale-0 group-hover:scale-100 transition-transform duration-500"></div>
       </a>
-      <a href="#gallery" class="bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-center">
-        <i class="fas fa-images mr-2"></i>
-        View Gallery
+      
+      <a href="#gallery" class="group relative overflow-hidden bg-gradient-to-r from-secondary via-accent to-primary text-white px-10 py-5 rounded-full text-xl font-bold hover:shadow-2xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-500 text-center">
+        <span class="relative z-10 flex items-center justify-center">
+          <i class="fas fa-images mr-3 text-2xl group-hover:scale-110 transition-transform duration-300"></i>
+          View Gallery
+        </span>
+        <div class="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="absolute inset-0 bg-white/20 rounded-full blur-xl scale-0 group-hover:scale-100 transition-transform duration-500"></div>
       </a>
     </div>
+
+    <!-- Enhanced Stats Section -->
+    <div class="grid grid-cols-3 gap-8 mt-16 animate-on-scroll" data-aos="fade-up" data-aos-delay="800">
+      <div class="text-center group">
+        <div class="text-4xl md:text-5xl font-black text-primary mb-2 group-hover:scale-110 transition-transform duration-300">500+</div>
+        <div class="text-sm md:text-base text-gray-600 font-medium">Happy Events</div>
+        <div class="w-16 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mt-3 rounded-full group-hover:w-20 transition-all duration-300"></div>
+      </div>
+      <div class="text-center group">
+        <div class="text-4xl md:text-5xl font-black text-secondary mb-2 group-hover:scale-110 transition-transform duration-300">10K+</div>
+        <div class="text-sm md:text-base text-gray-600 font-medium">Photos Taken</div>
+        <div class="text-sm md:text-base text-gray-600 font-medium">Photos Taken</div>
+        <div class="w-16 h-1 bg-gradient-to-r from-secondary to-accent mx-auto mt-3 rounded-full group-hover:w-20 transition-all duration-300"></div>
+      </div>
+      <div class="text-center group">
+        <div class="text-4xl md:text-5xl font-black text-accent mb-2 group-hover:scale-110 transition-transform duration-300">5★</div>
+        <div class="text-sm md:text-base text-gray-600 font-medium">Rating</div>
+        <div class="w-16 h-1 bg-gradient-to-r from-accent to-primary mx-auto mt-3 rounded-full group-hover:w-20 transition-all duration-300"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Elements Around Hero -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="parallax-element absolute top-1/4 left-10 w-20 h-20 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-xl animate-float-slow" data-speed="0.1"></div>
+    <div class="parallax-element absolute top-3/4 right-10 w-16 h-16 bg-gradient-to-br from-accent/20 to-primary/20 rounded-full blur-xl animate-float-medium" data-speed="0.15"></div>
+    <div class="parallax-element absolute bottom-1/4 left-1/4 w-24 h-24 bg-gradient-to-br from-secondary/20 to-accent/20 rounded-full blur-xl animate-float-fast" data-speed="0.2"></div>
   </div>
 </section>
 
-      
-      <!-- Stats -->
-      <div class="grid grid-cols-3 gap-6">
-        <div class="text-center">
-          <div class="text-3xl font-bold text-primary mb-1">500+</div>
-          <div class="text-sm text-gray-600">Happy Events</div>
-        </div>
-        <div class="text-center">
-          <div class="text-3xl font-bold text-secondary mb-1">10K+</div>
-          <div class="text-sm text-gray-600">Photos Taken</div>
-        </div>
-        <div class="text-center">
-          <div class="text-3xl font-bold text-accent mb-1">5★</div>
-          <div class="text-sm text-gray-600">Rating</div>
-        </div>
-      </div>
-    </div>
-    
 
-      
-   
-    </div>
-  </div>  
-</section>
 
-<!-- Features Section -->
-<section id="features" class="py-20 bg-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-gray-800 mb-4">Why Choose AD Mirror Photo Booth?</h2>
-      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+<!-- Enhanced Features Section with Parallax -->
+<section id="features" class="py-24 bg-gradient-to-br from-white via-amber-50/30 to-orange-50/30 relative overflow-hidden">
+  <!-- Background Parallax Elements -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="parallax-element absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl animate-float-slow" data-speed="0.1"></div>
+    <div class="parallax-element absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-br from-accent/10 to-primary/10 rounded-full blur-3xl animate-float-medium" data-speed="0.15"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-20 animate-on-scroll" data-aos="fade-up">
+      <h2 class="text-5xl md:text-6xl font-black text-gray-800 mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+        Why Choose AD Mirror Photo Booth?
+      </h2>
+      <p class="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
         Experience the future of photo booths with our cutting-edge mirror technology and exceptional service in Cebu City.
       </p>
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div class="text-center p-6 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 hover:shadow-lg transition-all duration-300">
-        <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-          <i class="fas fa-mirror text-2xl text-white"></i>
+      <!-- Enhanced Feature Card 1 -->
+      <div class="group text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover-lift border border-white/20 animate-on-scroll" data-aos="fade-up" data-aos-delay="100">
+        <div class="relative mb-6">
+          <div class="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-500 shadow-lg">
+            <i class="fas fa-mirror text-3xl text-white group-hover:rotate-12 transition-transform duration-300"></i>
+          </div>
+          <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl blur-xl scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         </div>
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">Touch Screen Mirror</h3>
-        <p class="text-gray-600">Interactive mirror interface that doubles as a photo booth with intuitive touch controls.</p>
+        <h3 class="text-2xl font-bold text-gray-800 mb-4 group-hover:text-primary transition-colors duration-300">Touch Screen Mirror</h3>
+        <p class="text-gray-600 leading-relaxed">Interactive mirror interface that doubles as a photo booth with intuitive touch controls and stunning visual effects.</p>
       </div>
       
-      <div class="text-center p-6 rounded-xl bg-gradient-to-br from-orange-50 to-red-50 hover:shadow-lg transition-all duration-300">
-        <div class="w-16 h-16 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center mx-auto mb-4">
-          <i class="fas fa-print text-2xl text-white"></i>
+      <!-- Enhanced Feature Card 2 -->
+      <div class="group text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover-lift border border-white/20 animate-on-scroll" data-aos="fade-up" data-aos-delay="200">
+        <div class="relative mb-6">
+          <div class="w-20 h-20 bg-gradient-to-r from-secondary to-accent rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-500 shadow-lg">
+            <i class="fas fa-print text-3xl text-white group-hover:scale-110 transition-transform duration-300"></i>
+          </div>
+          <div class="absolute inset-0 bg-gradient-to-r from-secondary/20 to-accent/20 rounded-2xl blur-xl scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         </div>
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">Instant Prints</h3>
-        <p class="text-gray-600">Get your photos printed instantly with custom AD branding and high-quality paper.</p>
+        <h3 class="text-2xl font-bold text-gray-800 mb-4 group-hover:text-secondary transition-colors duration-300">Instant Prints</h3>
+        <p class="text-gray-600 leading-relaxed">Get your photos printed instantly with custom AD branding and high-quality premium paper for lasting memories.</p>
       </div>
       
-      <div class="text-center p-6 rounded-xl bg-gradient-to-br from-yellow-50 to-amber-50 hover:shadow-lg transition-all duration-300">
-        <div class="w-16 h-16 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center mx-auto mb-4">
-          <i class="fas fa-share-alt text-2xl text-white"></i>
+      <!-- Enhanced Feature Card 3 -->
+      <div class="group text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover-lift border border-white/20 animate-on-scroll" data-aos="fade-up" data-aos-delay="300">
+        <div class="relative mb-6">
+          <div class="w-20 h-20 bg-gradient-to-r from-accent to-primary rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-500 shadow-lg">
+            <i class="fas fa-share-alt text-3xl text-white group-hover:rotate-12 transition-transform duration-300"></i>
+          </div>
+          <div class="absolute inset-0 bg-gradient-to-r from-accent/20 to-primary/20 rounded-2xl blur-xl scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         </div>
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">Social Sharing</h3>
-        <p class="text-gray-600">Share your photos instantly on social media with our integrated sharing platform.</p>
+        <h3 class="text-2xl font-bold text-gray-800 mb-4 group-hover:text-accent transition-colors duration-300">Social Sharing</h3>
+        <p class="text-gray-600 leading-relaxed">Share your photos instantly on social media with our integrated sharing platform and viral-worthy filters.</p>
       </div>
       
-      <div class="text-center p-6 rounded-xl bg-gradient-to-br from-yellow-50 to-orange-50 hover:shadow-lg transition-all duration-300">
-        <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-          <i class="fas fa-palette text-2xl text-white"></i>
+      <!-- Enhanced Feature Card 4 -->
+      <div class="group text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover-lift border border-white/20 animate-on-scroll" data-aos="fade-up" data-aos-delay="400">
+        <div class="relative mb-6">
+          <div class="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-500 shadow-lg">
+            <i class="fas fa-palette text-3xl text-white group-hover:scale-110 transition-transform duration-300"></i>
+          </div>
+          <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl blur-xl scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         </div>
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">Custom Props</h3>
-        <p class="text-gray-600">Fun and creative props to make your photos even more entertaining and memorable.</p>
+        <h3 class="text-2xl font-bold text-gray-800 mb-4 group-hover:text-primary transition-colors duration-300">Custom Props</h3>
+        <p class="text-gray-600 leading-relaxed">Fun and creative props to make your photos even more entertaining and memorable for all ages.</p>
       </div>
       
-      <div class="text-center p-6 rounded-xl bg-gradient-to-br from-red-50 to-pink-50 hover:shadow-lg transition-all duration-300">
-        <div class="w-16 h-16 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center mx-auto mb-4">
-          <i class="fas fa-clock text-2xl text-white"></i>
+      <!-- Enhanced Feature Card 5 -->
+      <div class="group text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover-lift border border-white/20 animate-on-scroll" data-aos="fade-up" data-aos-delay="500">
+        <div class="relative mb-6">
+          <div class="w-20 h-20 bg-gradient-to-r from-secondary to-accent rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-500 shadow-lg">
+            <i class="fas fa-clock text-3xl text-white group-hover:rotate-12 transition-transform duration-300"></i>
+          </div>
+          <div class="absolute inset-0 bg-gradient-to-r from-secondary/20 to-accent/20 rounded-2xl blur-xl scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         </div>
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">24/7 Support</h3>
-        <p class="text-gray-600">Round-the-clock customer support to ensure your event runs smoothly.</p>
+        <h3 class="text-2xl font-bold text-gray-800 mb-4 group-hover:text-secondary transition-colors duration-300">24/7 Support</h3>
+        <p class="text-gray-600 leading-relaxed">Round-the-clock customer support to ensure your event runs smoothly and exceeds expectations.</p>
       </div>
       
-      <div class="text-center p-6 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 hover:shadow-lg transition-all duration-300">
-        <div class="w-16 h-16 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center mx-auto mb-4">
-          <i class="fas fa-truck text-2xl text-white"></i>
+      <!-- Enhanced Feature Card 6 -->
+      <div class="group text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover-lift border border-white/20 animate-on-scroll" data-aos="fade-up" data-aos-delay="600">
+        <div class="relative mb-6">
+          <div class="w-20 h-20 bg-gradient-to-r from-accent to-primary rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-500 shadow-lg">
+            <i class="fas fa-truck text-3xl text-white group-hover:scale-110 transition-transform duration-300"></i>
+          </div>
+          <div class="absolute inset-0 bg-gradient-to-r from-accent/20 to-primary/20 rounded-2xl blur-xl scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         </div>
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">Setup & Delivery</h3>
-        <p class="text-gray-600">Professional setup and teardown service included with every booking.</p>
+        <h3 class="text-2xl font-bold text-gray-800 mb-4 group-hover:text-accent transition-colors duration-300">Setup & Delivery</h3>
+        <p class="text-gray-600 leading-relaxed">Professional setup and teardown service included with every booking for hassle-free events.</p>
       </div>
     </div>
   </div>
@@ -295,7 +414,7 @@
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-     <a href="/wedding-gallery" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block">
+  <a href="{{ url('gallery/wedding') }}" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block">
      <video src="image/3.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
      <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
        <div class="p-6 text-white">
@@ -308,7 +427,7 @@
      </div>
    </a>
   
-     <a href="/corporate-gallery" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block">
+  <a href="{{ url('gallery/corporate') }}" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block">
      <video src="image/2.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
      <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
        <div class="p-6 text-white">
@@ -321,7 +440,7 @@
      </div>
    </a>
   
-     <a href="/birthday-gallery" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block">
+  <a href="{{ url('gallery/birthday') }}" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block">
      <video src="image/1.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
      <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
        <div class="p-6 text-white">
@@ -602,37 +721,261 @@
 </footer>
 
 <script>
-  // Mobile menu toggle
-  const btn = document.getElementById("menu-btn");
-  const menu = document.getElementById("mobile-menu");
-  
-  btn.addEventListener("click", () => {
-    menu.classList.toggle("hidden");
-  });
+  // Enhanced Mobile Menu Controller
+  class MobileMenuController {
+    constructor() {
+      this.menuBtn = document.getElementById('menu-btn');
+      this.mobileMenu = document.getElementById('mobile-menu');
+      this.init();
+    }
 
-  // Smooth scrolling for navigation links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }
+    init() {
+      this.bindEvents();
+    }
+
+    bindEvents() {
+      this.menuBtn.addEventListener('click', this.toggleMenu.bind(this));
+      
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!this.menuBtn.contains(e.target) && !this.mobileMenu.contains(e.target)) {
+          this.closeMenu();
+        }
+      });
+    }
+
+    toggleMenu() {
+      this.mobileMenu.classList.toggle('hidden');
+      this.menuBtn.classList.toggle('active');
+    }
+
+    closeMenu() {
+      this.mobileMenu.classList.add('hidden');
+      this.menuBtn.classList.remove('active');
+    }
+  }
+
+
+  // Improved Smooth Scroll for Navbar Links
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href.length > 1 && document.querySelector(href)) {
+          // Add click animation
+          this.classList.remove('navbar-click-animate');
+          void this.offsetWidth;
+          this.classList.add('navbar-click-animate');
+          this.addEventListener('animationend', function handler() {
+            this.classList.remove('navbar-click-animate');
+            this.removeEventListener('animationend', handler);
+          });
+          e.preventDefault();
+          const target = document.querySelector(href);
+          const nav = document.querySelector('nav');
+          const navHeight = nav ? nav.offsetHeight : 0;
+          const rect = target.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const top = rect.top + scrollTop - navHeight - 10; // 10px extra spacing
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
     });
   });
 
-  // Navbar background on scroll
-  window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('nav');
-    if (window.scrollY > 50) {
-      navbar.classList.add('bg-white/95');
-    } else {
-      navbar.classList.remove('bg-white/95');
+  // Enhanced Parallax Controller
+  class ParallaxController {
+    constructor() {
+      this.parallaxElements = document.querySelectorAll('.parallax-element');
+      this.mouseX = 0;
+      this.mouseY = 0;
+      this.scrollY = 0;
+      this.init();
     }
+
+    init() {
+      this.bindEvents();
+      this.animate();
+    }
+
+    bindEvents() {
+      window.addEventListener('scroll', this.handleScroll.bind(this));
+      window.addEventListener('mousemove', this.handleMouseMove.bind(this));
+      window.addEventListener('resize', this.handleResize.bind(this));
+    }
+
+    handleScroll() {
+      this.scrollY = window.pageYOffset;
+      this.updateParallax();
+    }
+
+    handleMouseMove(e) {
+      this.mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      this.mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      this.updateMouseParallax();
+    }
+
+    handleResize() {
+      this.updateParallax();
+    }
+
+    updateParallax() {
+      this.parallaxElements.forEach((element) => {
+        const speed = element.dataset.speed || 0.5;
+        const yPos = -(this.scrollY * speed);
+        const scale = 1 + (this.scrollY * 0.0001);
+        
+        element.style.transform = `translateY(${yPos}px) scale(${scale})`;
+      });
+    }
+
+    updateMouseParallax() {
+      document.querySelectorAll('.mouse-parallax').forEach((element) => {
+        const speed = element.dataset.mouseSpeed || 20;
+        const x = this.mouseX * speed;
+        const y = this.mouseY * speed;
+        
+        element.style.transform = `translate(${x}px, ${y}px)`;
+      });
+    }
+
+    animate() {
+      requestAnimationFrame(this.animate.bind(this));
+    }
+  }
+
+  // Enhanced Navbar Controller
+  class NavbarController {
+    constructor() {
+      this.navbar = document.querySelector('nav');
+      this.lastScrollY = 0;
+      this.init();
+    }
+
+    init() {
+      this.bindEvents();
+    }
+
+    bindEvents() {
+      window.addEventListener('scroll', this.handleScroll.bind(this));
+    }
+
+    handleScroll() {
+      const currentScrollY = window.pageYOffset;
+      
+      if (currentScrollY > this.lastScrollY && currentScrollY > 100) {
+        this.navbar.classList.add('navbar-hidden');
+      } else {
+        this.navbar.classList.remove('navbar-hidden');
+      }
+      
+      if (currentScrollY > 50) {
+        this.navbar.classList.add('navbar-scrolled');
+      } else {
+        this.navbar.classList.remove('navbar-scrolled');
+      }
+      
+      this.lastScrollY = currentScrollY;
+    }
+  }
+
+  // Intersection Observer for Animations
+  class AnimationController {
+    constructor() {
+      this.animatedElements = document.querySelectorAll('.animate-on-scroll');
+      this.init();
+    }
+
+    init() {
+      this.createObserver();
+    }
+
+    createObserver() {
+      const options = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, options);
+
+      this.animatedElements.forEach(element => {
+        observer.observe(element);
+      });
+    }
+  }
+
+  // Typing Effect
+  class TypingEffect {
+    constructor(element, text, speed = 100) {
+      this.element = element;
+      this.text = text;
+      this.speed = speed;
+      this.currentIndex = 0;
+      this.init();
+    }
+
+    init() {
+      this.type();
+    }
+
+    type() {
+      if (this.currentIndex < this.text.length) {
+        this.element.textContent += this.text.charAt(this.currentIndex);
+        this.currentIndex++;
+        setTimeout(() => this.type(), this.speed);
+      }
+    }
+  }
+
+  // Initialize all controllers when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    new MobileMenuController();
+    new ParallaxController();
+    new NavbarController();
+    new AnimationController();
+    // Initialize typing effect
+    const typingElement = document.querySelector('.typing-effect');
+    if (typingElement) {
+      new TypingEffect(typingElement, 'AD', 150);
+    }
+    // Add loading animation
+    document.body.classList.add('loaded');
   });
+
+  // Utility functions
+  window.utils = {
+    debounce: (func, wait) => {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    },
+    
+    throttle: (func, limit) => {
+      let inThrottle;
+      return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+          func.apply(context, args);
+          inThrottle = true;
+          setTimeout(() => inThrottle = false, limit);
+        }
+      };
+    }
+  };
 </script>
 
 </body>

@@ -7,18 +7,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/wedding-gallery', function () {
-    return view('wedding-gallery');
+Route::get('/gallery/wedding', function () {
+    return view('gallery.wedding-gallery');
 });
 
-Route::get('/corporate-gallery', function () {
-    return view('corporate-gallery');
+Route::get('/gallery/corporate', function () {
+    return view('gallery.corporate-gallery');
 });
 
-Route::get('/birthday-gallery', function () {
-    return view('birthday-gallery');
+Route::get('/gallery/birthday', function () {
+    return view('gallery.birthday-gallery');
 });
 
 Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+
+Route::get('/demo', function () {
+    return view('demo');
+})->name('demo');
 
 
