@@ -11,14 +11,42 @@
       theme: {
         extend: {
           colors: {
-        
+            primary: '#fd7d14',
+            secondary: '#fd7d14',
+            accent: '#fd7d14',
           }
         }
       }
     }
   </script>
+  <style>
+    .parallax-container { perspective: 1000px; transform-style: preserve-3d; }
+    .parallax-image { transform: none !important; will-change: auto; transition: none; }
+    .scroll-message { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+    .scroll-message.active { opacity: 1; transform: translateY(0); }
+    .scroll-message.fade-out { opacity: 0; transform: translateY(-30px); }
+    html { scroll-behavior: smooth; }
+    @keyframes float-slow { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-30px) scale(1.05); } 100% { transform: translateY(0) scale(1); } }
+    @keyframes float-medium { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-50px) scale(1.1); } 100% { transform: translateY(0) scale(1); } }
+    @keyframes float-fast { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-20px) scale(0.98); } 100% { transform: translateY(0) scale(1); } }
+    .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
+    .animate-float-medium { animation: float-medium 6s ease-in-out infinite; }
+    .animate-float-fast { animation: float-fast 4s ease-in-out infinite; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(253, 125, 20, 0.1); }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(45deg, #fd7d14, #fd7d14); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: linear-gradient(45deg, #fd7d14, #fd7d14); }
+  </style>
 </head>
 <body class="relative min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
+<!-- Parallax & Animated Shapes -->
+<div class="pointer-events-none select-none">
+  <div class="parallax-shape absolute top-10 left-0 w-40 h-40 bg-gradient-to-br from-primary to-secondary opacity-30 rounded-full blur-2xl animate-float-slow z-0"></div>
+  <div class="parallax-shape absolute top-1/2 right-0 w-32 h-32 bg-gradient-to-br from-accent to-primary opacity-20 rounded-full blur-2xl animate-float-fast z-0"></div>
+  <div class="parallax-shape absolute bottom-0 left-1/3 w-56 h-56 bg-gradient-to-br from-secondary to-accent opacity-20 rounded-full blur-3xl animate-float-medium z-0"></div>
+  <svg class="parallax-shape absolute top-24 right-1/4 w-24 h-24 opacity-30 animate-float-slow z-0" viewBox="0 0 64 64" fill="none"><path d="M32 58s26-15.9 26-34A14 14 0 0 0 32 10a14 14 0 0 0-26 14c0 18.1 26 34 26 34z" fill="#fd7d14"/></svg>
+  <svg class="parallax-shape absolute bottom-20 left-10 w-20 h-20 opacity-20 animate-float-medium z-0" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" stroke="#fd7d14" stroke-width="6" fill="none"/></svg>
+</div>
 
 <!-- Video Background -->
 <video autoplay muted loop playsinline 
@@ -110,116 +138,201 @@
 <!-- Gallery Grid -->
 <section class="py-20 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      
-      <!-- Birthday Photo 1 -->
-      <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500">
-    <img src="/image/birthday1.jpg" alt="Birthday Party 1" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-          <div class="p-6 text-white w-full">
-            <h3 class="text-lg font-semibold mb-2">Birthday Celebrations</h3>
-            <p class="text-sm opacity-90">Making memories that last</p>
-            <div class="flex items-center mt-3">
-              <i class="fas fa-birthday-cake text-pink-400 mr-2"></i>
-              <span class="text-sm">Birthday Party</span>
-            </div>
-          </div>
+    <div class="fixed top-20 right-8 z-40 hidden lg:block">
+      <div class="bg-white/80 backdrop-blur-sm rounded-full p-3 shadow-lg">
+        <div class="w-3 h-32 bg-gray-200 rounded-full relative">
+          <div id="scroll-progress" class="w-3 bg-gradient-to-b from-primary to-secondary rounded-full transition-all duration-300" style="height: 0%"></div>
         </div>
       </div>
-
-      <!-- Birthday Photo 2 -->
-      <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500">
-    <img src="/image/birthday2.jpg" alt="Birthday Party 2" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-          <div class="p-6 text-white w-full">
-            <h3 class="text-lg font-semibold mb-2">Fun Party Moments</h3>
-            <p class="text-sm opacity-90">Joy and laughter captured</p>
-            <div class="flex items-center mt-3">
-              <i class="fas fa-birthday-cake text-pink-400 mr-2"></i>
-              <span class="text-sm">Birthday Party</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Birthday Photo 3 -->
-      <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500">
-    <img src="/image/birthday3.jpg" alt="Birthday Party 3" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-          <div class="p-6 text-white w-full">
-            <h3 class="text-lg font-semibold mb-2">Birthday Joy</h3>
-            <p class="text-sm opacity-90">Pure happiness and fun</p>
-            <div class="flex items-center mt-3">
-              <i class="fas fa-birthday-cake text-pink-400 mr-2"></i>
-              <span class="text-sm">Birthday Party</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Birthday Photo 4 -->
-      <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500">
-    <img src="/image/birthday4.jpg" alt="Birthday Party 4" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-          <div class="p-6 text-white w-full">
-            <h3 class="text-lg font-semibold mb-2">Party Fun & Games</h3>
-            <p class="text-sm opacity-90">Entertainment for everyone</p>
-            <div class="flex items-center mt-3">
-              <i class="fas fa-birthday-cake text-pink-400 mr-2"></i>
-              <span class="text-sm">Birthday Party</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Birthday Photo 5 -->
-      <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500">
-    <img src="/image/birthday5.jpg" alt="Birthday Party 5" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-          <div class="p-6 text-white w-full">
-            <h3 class="text-lg font-semibold mb-2">Birthday Memories</h3>
-            <p class="text-sm opacity-90">Special moments preserved</p>
-            <div class="flex items-center mt-3">
-              <i class="fas fa-birthday-cake text-pink-400 mr-2"></i>
-              <span class="text-sm">Birthday Party</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Birthday Photo 6 -->
-      <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500">
-    <img src="/image/birthday6.jpg" alt="Birthday Party 6" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-          <div class="p-6 text-white w-full">
-            <h3 class="text-lg font-semibold mb-2">Celebration Time</h3>
-            <p class="text-sm opacity-90">Party atmosphere captured</p>
-            <div class="flex items-center mt-3">
-              <i class="fas fa-birthday-cake text-pink-400 mr-2"></i>
-              <span class="text-sm">Birthday Party</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
+    <div class="parallax-container relative">
+      <!-- Birthday Photo 1 with Message -->
+      <div class="mb-32 relative">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <!-- Image with Parallax -->
+          <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+            <img src="/image/birthday1.jpg" alt="Birthday Party 1" 
+                 class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
+                 data-speed="0.3">
+            <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+          <!-- Centered Message -->
+          <div class="text-center lg:text-left">
+            <div class="scroll-message" data-scroll="1">
+              <div class="mb-6">
+                <i class="fas fa-birthday-cake text-4xl text-orange-400 mb-4"></i>
+                <h3 class="text-3xl font-bold text-gray-800 mb-4">Birthday Fun</h3>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                  Laughter, games, and memories made. Capture the joy of your birthday party with our interactive photo booth.
+                </p>
+              </div>
+              <div class="flex items-center justify-center lg:justify-start space-x-4">
+                <span class="text-sm text-primary font-semibold">Birthday Party</span>
+                <div class="w-8 h-px bg-primary"></div>
+                <span class="text-sm text-gray-500">Scroll to continue</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <!-- Call to Action -->
+      <!-- Birthday Photo 2 with Message -->
+      <div class="mb-32 relative">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <!-- Centered Message -->
+          <div class="text-center lg:text-right order-2 lg:order-1">
+            <div class="scroll-message" data-scroll="2">
+              <div class="mb-6">
+                <i class="fas fa-gift text-4xl text-primary mb-4"></i>
+                <h3 class="text-3xl font-bold text-gray-800 mb-4">Surprise Moments</h3>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                  Unwrap the excitement! Every birthday is filled with surprises and smiles to remember.
+                </p>
+              </div>
+              <div class="flex items-center justify-center lg:justify-end space-x-4">
+                <span class="text-sm text-gray-500">Keep scrolling</span>
+                <div class="w-8 h-px bg-primary"></div>
+                <span class="text-sm text-primary font-semibold">Birthday Party</span>
+              </div>
+            </div>
+          </div>
+          <!-- Image with Parallax -->
+          <div class="relative overflow-hidden rounded-2xl shadow-2xl order-1 lg:order-2">
+            <img src="/image/birthday2.jpg" alt="Birthday Party 2" 
+                 class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
+                 data-speed="0.4">
+            <div class="absolute inset-0 bg-gradient-to-l from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Birthday Photo 3 with Message -->
+      <div class="mb-32 relative">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <!-- Image with Parallax -->
+          <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+            <img src="/image/birthday3.jpg" alt="Birthday Party 3" 
+                 class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
+                 data-speed="0.5">
+            <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+          <!-- Centered Message -->
+          <div class="text-center lg:text-left">
+            <div class="scroll-message" data-scroll="3">
+              <div class="mb-6">
+                <i class="fas fa-smile-beam text-4xl text-yellow-400 mb-4"></i>
+                <h3 class="text-3xl font-bold text-gray-800 mb-4">Smiles All Around</h3>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                  Happy faces, silly poses, and endless fun. Our booth brings out the best in every guest!
+                </p>
+              </div>
+              <div class="flex items-center justify-center lg:justify-start space-x-4">
+                <span class="text-sm text-primary font-semibold">Birthday Party</span>
+                <div class="w-8 h-px bg-primary"></div>
+                <span class="text-sm text-gray-500">More to discover</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Birthday Photo 4 with Message -->
+      <div class="mb-32 relative">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <!-- Centered Message -->
+          <div class="text-center lg:text-right order-2 lg:order-1">
+            <div class="scroll-message" data-scroll="4">
+              <div class="mb-6">
+                <i class="fas fa-magic text-4xl text-secondary mb-4"></i>
+                <h3 class="text-3xl font-bold text-gray-800 mb-4">Magical Memories</h3>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                  Every birthday is a little bit magical. Let us help you capture those enchanting moments forever.
+                </p>
+              </div>
+              <div class="flex items-center justify-center lg:justify-end space-x-4">
+                <span class="text-sm text-gray-500">Almost there</span>
+                <div class="w-8 h-px bg-primary"></div>
+                <span class="text-sm text-primary font-semibold">Birthday Party</span>
+              </div>
+            </div>
+          </div>
+          <!-- Image with Parallax -->
+          <div class="relative overflow-hidden rounded-2xl shadow-2xl order-1 lg:order-2">
+            <img src="/image/birthday4.jpg" alt="Birthday Party 4" 
+                 class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
+                 data-speed="0.6">
+            <div class="absolute inset-0 bg-gradient-to-l from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Birthday Photo 5 with Message -->
+      <div class="mb-32 relative">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <!-- Image with Parallax -->
+          <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+            <img src="/image/birthday5.jpg" alt="Birthday Party 5" 
+                 class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
+                 data-speed="0.7">
+            <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+          <!-- Centered Message -->
+          <div class="text-center lg:text-left">
+            <div class="scroll-message" data-scroll="5">
+              <div class="mb-6">
+                <i class="fas fa-crown text-4xl text-orange-400 mb-4"></i>
+                <h3 class="text-3xl font-bold text-gray-800 mb-4">Party Royalty</h3>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                  Every birthday star deserves the royal treatment. Celebrate big and make memories that last a lifetime.
+                </p>
+              </div>
+              <div class="flex items-center justify-center lg:justify-start space-x-4">
+                <span class="text-sm text-primary font-semibold">Birthday Party</span>
+                <div class="w-8 h-px bg-primary"></div>
+                <span class="text-sm text-gray-500">Final moments</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Birthday Photo 6 with Message -->
+      <div class="mb-32 relative">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <!-- Centered Message -->
+          <div class="text-center lg:text-right order-2 lg:order-1">
+            <div class="scroll-message" data-scroll="6">
+              <div class="mb-6">
+                <i class="fas fa-infinity text-4xl text-accent mb-4"></i>
+                <h3 class="text-3xl font-bold text-gray-800 mb-4">Endless Fun</h3>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                  The fun never ends when you celebrate with us. Here’s to many more birthdays and memories together!
+                </p>
+              </div>
+              <div class="flex items-center justify-center lg:justify-end space-x-4">
+                <span class="text-sm text-gray-500">Ready to begin?</span>
+                <div class="w-8 h-px bg-primary"></div>
+                <span class="text-sm text-primary font-semibold">Birthday Party</span>
+              </div>
+            </div>
+          </div>
+          <!-- Image with Parallax -->
+          <div class="relative overflow-hidden rounded-2xl shadow-2xl order-1 lg:order-2">
+            <img src="/image/birthday6.jpg" alt="Birthday Party 6" 
+                 class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
+                 data-speed="0.8">
+            <div class="absolute inset-0 bg-gradient-to-l from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="text-center mt-16">
       <div class="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-8">
         <h3 class="text-2xl font-bold text-gray-800 mb-4">Ready to Make Your Birthday Unforgettable?</h3>
-        <p class="text-lg text-gray-600 mb-6">
-          Let us add fun and excitement to your birthday celebration with our interactive mirror photo booth experience.
-        </p>
+        <p class="text-lg text-gray-600 mb-6">Let us add fun and excitement to your birthday celebration with our interactive mirror photo booth experience.</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/#contact" class="bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-            <i class="fas fa-calendar-check mr-2"></i>
-            Book Birthday Party
-          </a>
-          <a href="/" class="border-2 border-primary text-primary px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300">
-            <i class="fas fa-home mr-2"></i>
-            Back to Home
-          </a>
+          <a href="/#contact" class="bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300">Book Birthday Party</a>
+          <a href="/" class="border-2 border-primary text-primary px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300">Back to Home</a>
         </div>
       </div>
     </div>
@@ -281,36 +394,140 @@
 </footer>
 
 <script>
-  // Mobile menu toggle
-  const btn = document.getElementById("menu-btn");
-  const menu = document.getElementById("mobile-menu");
-  
-  btn.addEventListener("click", () => {
-    menu.classList.toggle("hidden");
-  });
-
-  // Smooth scrolling for navigation links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
+  // Enhanced Parallax and Scroll Message Controller
+  class ParallaxGalleryController {
+    constructor() {
+      this.parallaxImages = document.querySelectorAll('.parallax-image');
+      this.scrollMessages = document.querySelectorAll('.scroll-message');
+      this.scrollProgress = document.getElementById('scroll-progress');
+      this.lastScrollY = 0;
+      this.currentMessageIndex = 0;
+      this.init();
+    }
+    init() {
+      this.bindEvents();
+      this.activateFirstMessage();
+      this.updateScrollProgress();
+    }
+    bindEvents() {
+      window.addEventListener('scroll', this.handleScroll.bind(this));
+      window.addEventListener('resize', this.handleResize.bind(this));
+    }
+    handleScroll() {
+      const scrollY = window.pageYOffset;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPercent = (scrollY / (documentHeight - windowHeight)) * 100;
+      this.updateScrollProgress(scrollPercent);
+      this.updateParallax(scrollY);
+      this.updateScrollMessages(scrollY, windowHeight);
+      this.lastScrollY = scrollY;
+    }
+    updateScrollProgress(percent = 0) {
+      if (this.scrollProgress) {
+        this.scrollProgress.style.height = `${percent}%`;
       }
+    }
+    updateParallax(scrollY) {
+      this.parallaxImages.forEach((image) => {
+        const speed = parseFloat(image.dataset.speed) || 0.5;
+        const rect = image.getBoundingClientRect();
+        const scrolled = scrollY * speed;
+        const translateX = -(scrolled * 0.1);
+        const translateY = -(scrolled * 0.05);
+        const scale = 1 + (scrolled * 0.0001);
+        image.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`;
+      });
+    }
+    updateScrollMessages(scrollY, windowHeight) {
+      this.scrollMessages.forEach((message, index) => {
+        const rect = message.getBoundingClientRect();
+        const messageTop = rect.top + scrollY;
+        const messageBottom = messageTop + rect.height;
+        const triggerPoint = scrollY + (windowHeight * 0.6);
+        if (triggerPoint >= messageTop && triggerPoint <= messageBottom) {
+          this.activateMessage(index);
+        } else if (scrollY > messageBottom) {
+          this.fadeOutMessage(index);
+        } else if (scrollY < messageTop - windowHeight) {
+          // ...
+        }
+      });
+    }
+    activateMessage(index) {
+      this.scrollMessages.forEach((msg, i) => {
+        if (i !== index) {
+          // ...
+        }
+      });
+      const currentMessage = this.scrollMessages[index];
+      if (currentMessage) {
+        currentMessage.classList.remove('fade-out');
+        currentMessage.classList.add('active');
+        this.currentMessageIndex = index;
+      }
+    }
+    fadeOutMessage(index) {
+      const message = this.scrollMessages[index];
+      if (message) {
+        message.classList.remove('active');
+        message.classList.add('fade-out');
+      }
+    }
+    activateFirstMessage() {
+      if (this.scrollMessages.length > 0) {
+        this.activateMessage(0);
+      }
+    }
+    handleResize() {
+      this.updateScrollProgress();
+    }
+  }
+  class MobileMenuController {
+    constructor() {
+      this.menuBtn = document.getElementById('menu-btn');
+      this.mobileMenu = document.getElementById('mobile-menu');
+      this.init();
+    }
+    init() {
+      this.bindEvents();
+    }
+    bindEvents() {
+      this.menuBtn.addEventListener('click', this.toggleMenu.bind(this));
+      document.addEventListener('click', (e) => {
+        if (!this.menuBtn.contains(e.target) && !this.mobileMenu.contains(e.target)) {
+          // ...
+        }
+      });
+    }
+    toggleMenu() {
+      this.mobileMenu.classList.toggle('hidden');
+    }
+    closeMenu() {
+      this.mobileMenu.classList.add('hidden');
+    }
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    new ParallaxGalleryController();
+    new MobileMenuController();
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          // ...
+        }
+      });
     });
   });
-
-  // Navbar background on scroll
-  window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('nav');
-    if (window.scrollY > 50) {
-      navbar.classList.add('bg-white/95');
-    } else {
-      navbar.classList.remove('bg-white/95');
-    }
+  document.addEventListener('mousemove', function(e) {
+    const shapes = document.querySelectorAll('.parallax-shape');
+    const x = (e.clientX / window.innerWidth - 0.5) * 2;
+    const y = (e.clientY / window.innerHeight - 0.5) * 2;
+    shapes.forEach((shape, i) => {
+      const speed = (i + 1) * 10;
+      shape.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+    });
   });
 </script>
 
