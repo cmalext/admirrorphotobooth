@@ -13,8 +13,8 @@
         extend: {
           colors: {
             primary: '#8a4813ff',
-            secondary: '#e97313ff',
-            accent: '#f39c12ff',
+            secondary: '#944403ff',
+            accent: '#8b4d05ff',
           },
           fontFamily: {
             'inter': ['Inter', 'sans-serif'],
@@ -267,7 +267,7 @@
       <div class="group text-center p-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-xl hover:shadow-2xl hover-lift border border-white/20 animate-on-scroll" data-aos="fade-up" data-aos-delay="100">
         <div class="relative mb-6">
           <div class="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-500 shadow-lg">
-            <i class="fas fa-mirror text-3xl text-white group-hover:rotate-12 transition-transform duration-300"></i>
+         <i class="fas fa-fingerprint text-3xl text-white group-hover:rotate-12 transition-transform duration-300"></i>
           </div>
           <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl blur-xl scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         </div>

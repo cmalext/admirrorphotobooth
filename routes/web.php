@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\PinController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,8 +23,18 @@ Route::get('/gallery/birthday', function () {
 
 Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
 
-Route::get('/demo', function () {
-    return view('demo');
-})->name('demo');
+// Admin auth & dashboard
+Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [AdminAuthController::class, 'dashboard'])->name('admin.dashboard');
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
+    // Pins
+    Route::post('/pins', [PinController::class, 'store'])->name('pins.store');
+    Route::delete('/pins/{pin}', [PinController::class, 'destroy'])->name('pins.destroy');
+});
+
 
 
