@@ -50,14 +50,12 @@ class AdminAuthController extends Controller
         $todaysMessages = ContactMessage::whereDate('created_at', now()->toDateString())->count();
         $weeksMessages = ContactMessage::whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count();
 
-        $recentMessages = ContactMessage::latest()->limit(10)->get();
         $pins = Pin::where('user_id', auth()->id())->latest()->get();
 
         return view('admin.dashboard', [
             'totalMessages' => $totalMessages,
             'todaysMessages' => $todaysMessages,
             'weeksMessages' => $weeksMessages,
-            'recentMessages' => $recentMessages,
             'pins' => $pins,
         ]);
     }

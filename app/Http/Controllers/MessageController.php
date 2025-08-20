@@ -12,7 +12,7 @@ class MessageController
     public function index(): View
     {
         $messages = ContactMessage::latest()->paginate(20);
-        return view('messages.index', compact('messages'));
+        return view('admin.messages', compact('messages'));
     }
 
     public function store(Request $request): RedirectResponse

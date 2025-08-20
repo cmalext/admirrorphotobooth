@@ -45,6 +45,19 @@
         }
         @keyframes floatSlow { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }
         @keyframes rotate3d { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+
+        /* Depth and tilt enhancements */
+        body { perspective: 1200px; perspective-origin: 50% 30%; }
+        .tilt { will-change: transform; transform-style: preserve-3d; transition: transform .2s ease; }
+        .tilt:hover { transition: transform .08s ease; }
+        .glow { box-shadow: 0 10px 30px rgba(148, 68, 3, 0.08); }
+
+        /* Subtle grid overlay that parallax-scrolls */
+        .grid-overlay { position: absolute; inset: -10%; background-image:
+            linear-gradient(to right, rgba(148, 68, 3, 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(148, 68, 3, 0.04) 1px, transparent 1px);
+            background-size: 48px 48px, 48px 48px; opacity: .5; }
+        .noise-overlay { position: absolute; inset: 0; background-image: radial-gradient(rgba(0,0,0,.06) 1px, transparent 1px); background-size: 3px 3px; mix-blend-mode: multiply; opacity: .03; }
     </style>
 </head>
 <body class="parallax min-h-screen">
@@ -58,26 +71,54 @@
             <circle cx="32" cy="32" r="20" stroke="currentColor" class="text-primary" stroke-width="3" />
             <circle cx="32" cy="32" r="28" stroke="currentColor" class="text-secondary" stroke-width="2" />
         </svg>
+        <div class="parallax-element grid-overlay" data-speed="0.05"></div>
+        <div class="noise-overlay"></div>
+        <div class="parallax-element absolute -top-16 left-1/2 -translate-x-1/2 w-[44rem] h-[44rem] rounded-full bg-gradient-to-tr from-primary/10 via-secondary/10 to-accent/10 blur-3xl opacity-70" data-speed="0.08"></div>
     </div>
-    <header class="bg-gradient-to-r from-primary via-secondary to-accent gradient-animate text-white">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center font-bold">AD</div>
-                <h1 class="font-semibold">Admin Dashboard</h1>
+    <header class="sticky top-0 z-40 bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
+            <div class="flex items-center gap-3 mr-2">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center font-bold text-primary">AD</div>
+                
             </div>
-            <div class="flex items-center gap-4 text-sm">
-                <span>Welcome, {{ auth()->user()->name }}</span>
+           
+            <div class="ml-auto flex items-center gap-4 text-sm">
+                <span class="text-gray-700">Hi, {{ auth()->user()->name }}</span>
                 <form method="POST" action="{{ route('admin.logout') }}">
                     @csrf
-                    <button class="bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded">Logout</button>
+                    <button class="px-3 py-1.5 rounded-lg ring-1 ring-gray-300 hover:bg-gray-50">Logout</button>
                 </form>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white/80 backdrop-blur ring-1 ring-primary/10 rounded-xl shadow-xl p-6 flex items-center gap-4 hover-lift animate-on-scroll">
+    <div class="max-w-7xl mx-auto px-4 py-6 flex gap-6">
+        <aside class="w-64 shrink-0">
+            <div class="bg-white/80 backdrop-blur ring-1 ring-gray-200 rounded-2xl p-3 sticky top-24">
+                <button class="w-full mb-2 px-4 py-3 rounded-xl text-white bg-gradient-to-r from-primary via-secondary to-accent">Notifications</button>
+                <nav class="text-sm">
+                    <a href="{{ route('messages.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 text-gray-700">
+                        <span class="inline-flex w-5"><svg class="w-5 h-5 text-primary" viewBox="0 0 20 20" fill="currentColor"><path d="M2.94 6.34A2 2 0 014.6 5h10.8a2 2 0 011.66.94L10 11.5 2.94 6.34zM2 7.92V14a2 2 0 002 2h12a2 2 0 002-2V7.92l-7.4 4.93a2 2 0 01-2.2 0L2 7.92z"/></svg></span>
+                        Inbox
+                    </a>
+                    <a href="{{ route('pins.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 text-gray-700">
+                        <span class="inline-flex w-5"><svg class="w-5 h-5 text-accent" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 012 0v5h4a1 1 0 010 2h-4v5a1 1 0 11-2 0V9H5a1 1 0 010-2h4V2z"/></svg></span>
+                        Pins
+                    </a>
+                    <a href="#stats" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 text-gray-700">
+                        <span class="inline-flex w-5"><svg class="w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="currentColor"><path d="M3 10a1 1 0 011-1h2v6H4a1 1 0 01-1-1v-4zm6-4a1 1 0 00-1 1v10h4V7a1 1 0 00-1-1H9zm6 6a1 1 0 00-1 1v4h2a1 1 0 001-1v-3a1 1 0 00-1-1h-1z"/></svg></span>
+                        Stats
+                    </a>
+                    <a href="{{ route('messages.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 text-gray-700">
+                        <span class="inline-flex w-5"><svg class="w-5 h-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H7l-4 3v-3H5a2 2 0 01-2-2V4z"/></svg></span>
+                        Messages
+                    </a>
+                </nav>
+            </div>
+        </aside>
+        <main class="flex-1 space-y-8">
+        <div id="stats" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white/80 backdrop-blur ring-1 ring-primary/10 rounded-xl shadow-xl p-6 flex items-center gap-4 tilt glow animate-on-scroll">
                 <div class="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v9a2 2 0 01-2 2H7l-4 3v-3H4a2 2 0 01-2-2V5z"/></svg>
                 </div>
@@ -86,7 +127,7 @@
                     <div class="text-2xl font-bold">{{ $totalMessages }}</div>
                 </div>
             </div>
-            <div class="bg-white/80 backdrop-blur ring-1 ring-secondary/10 rounded-xl shadow-xl p-6 flex items-center gap-4 hover-lift animate-on-scroll">
+            <div class="bg-white/80 backdrop-blur ring-1 ring-secondary/10 rounded-xl shadow-xl p-6 flex items-center gap-4 tilt glow animate-on-scroll">
                 <div class="w-12 h-12 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 9V5h2v4H9zm0 2h2v2H9v-2z"/></svg>
                 </div>
@@ -95,7 +136,7 @@
                     <div class="text-2xl font-bold">{{ $todaysMessages }}</div>
                 </div>
             </div>
-            <div class="bg-white/80 backdrop-blur ring-1 ring-accent/10 rounded-xl shadow-xl p-6 flex items-center gap-4 hover-lift animate-on-scroll">
+            <div class="bg-white/80 backdrop-blur ring-1 ring-accent/10 rounded-xl shadow-xl p-6 flex items-center gap-4 tilt glow animate-on-scroll">
                 <div class="w-12 h-12 rounded-lg bg-accent/10 text-accent flex items-center justify-center">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M6 2a1 1 0 000 2h8a1 1 0 100-2H6zM3 6a1 1 0 000 2h14a1 1 0 100-2H3zm3 4a1 1 0 000 2h8a1 1 0 100-2H6zm-3 4a1 1 0 000 2h14a1 1 0 100-2H3z"/></svg>
                 </div>
@@ -106,152 +147,88 @@
             </div>
         </div>
 
-        <section class="bg-white/80 backdrop-blur-xl ring-1 ring-primary/5 rounded-2xl shadow-xl p-8 animate-on-scroll">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-semibold">Pinned Notes & Reminders</h2>
-                <form method="POST" action="{{ route('pins.store') }}" class="flex gap-2">
-                    @csrf
-                    <input name="title" placeholder="Title" class="px-3 py-2 rounded-lg border border-gray-300 focus:ring-primary focus:outline-none" required>
-                    <input name="content" placeholder="Optional content" class="px-3 py-2 rounded-lg border border-gray-300 focus:ring-primary focus:outline-none w-64">
-                    <button class="bg-gradient-to-r from-primary via-secondary to-accent text-white px-4 py-2 rounded-lg">Add Pin</button>
-                </form>
+        <section id="photobooth" class="bg-white/80 backdrop-blur-xl ring-1 ring-primary/5 rounded-2xl shadow-xl p-8 animate-on-scroll">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-lg font-semibold">Photobooth Hub</h2>
+                    <p class="text-sm text-gray-500">Quick access to your photobooth business tools and assets.</p>
+                </div>
             </div>
-            @if($pins->isEmpty())
-                <div class="text-center text-gray-500 py-12">
-                    <div class="mx-auto w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center mb-3">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 012 0v5h4a1 1 0 010 2h-4v5a1 1 0 11-2 0V9H5a1 1 0 010-2h4V2z"/></svg>
-                    </div>
-                    <div class="font-medium">No pinned notes yet</div>
-                    <p class="text-sm">Create your first note or reminder to get started.</p>
-                </div>
-            @else
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    @foreach($pins as $pin)
-                        <div class="border rounded-xl p-4 bg-gradient-to-br from-white to-primary/5 hover-lift">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <div class="font-semibold">{{ $pin->title }}</div>
-                                    @if($pin->content)
-                                        <div class="text-sm text-gray-600 mt-1">{{ $pin->content }}</div>
-                                    @endif
-                                </div>
-                                <form method="POST" action="{{ route('pins.destroy', $pin) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="text-gray-500 hover:text-red-600" title="Remove">✕</button>
-                                </form>
-                            </div>
-                            <div class="text-xs text-gray-400 mt-2">{{ $pin->created_at->diffForHumans() }}</div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="rounded-xl ring-1 ring-gray-200 p-5 bg-gradient-to-br from-white to-primary/5 tilt">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                            <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h5.5a.5.5 0 00.5-.5V13a2 2 0 012-2h3.5a.5.5 0 00.5-.5V5a2 2 0 00-2-2H4z"/></svg>
                         </div>
-                    @endforeach
+                        <div class="font-medium">Bookings & Schedule</div>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">Manage upcoming events, client details, and shoot schedules.</p>
+                    <div class="flex gap-2">
+                        <a href="#" class="px-3 py-2 rounded-lg ring-1 ring-gray-300 hover:bg-gray-50 text-sm">View Calendar</a>
+                        <a href="#" class="px-3 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white text-sm">Create Booking</a>
+                    </div>
                 </div>
-            @endif
+                <div class="rounded-xl ring-1 ring-gray-200 p-5 bg-gradient-to-br from-white to-secondary/5 tilt">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center">
+                            <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v7a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 3h4v2H6V7zm0 3h8v2H6v-2z"/></svg>
+                        </div>
+                        <div class="font-medium">Packages & Pricing</div>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">Standardize your photobooth packages and share quotes fast.</p>
+                    <div class="flex gap-2">
+                        <a href="#" class="px-3 py-2 rounded-lg ring-1 ring-gray-300 hover:bg-gray-50 text-sm">Manage Packages</a>
+                        <a href="#" class="px-3 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white text-sm">Send Quote</a>
+                    </div>
+                </div>
+                <div class="rounded-xl ring-1 ring-gray-200 p-5 bg-gradient-to-br from-white to-accent/5 tilt">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-accent/10 text-accent flex items-center justify-center">
+                            <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M4 3a2 2 0 00-2 2v10l4-2 4 2 4-2 4 2V5a2 2 0 00-2-2H4z"/></svg>
+                        </div>
+                        <div class="font-medium">Marketing & Gallery</div>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">Keep your portfolio fresh and share highlights with clients.</p>
+                    <div class="flex gap-2">
+                        <a href="/gallery/corporate" class="px-3 py-2 rounded-lg ring-1 ring-gray-300 hover:bg-gray-50 text-sm">View Gallery</a>
+                        <a href="#" class="px-3 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white text-sm">Upload Photos</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="relative overflow-hidden rounded-2xl ring-1 ring-gray-200 bg-white tilt">
+                    <img src="/image/mirror.webp" alt="360 Booth" class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <div class="font-semibold">360 Booth</div>
+                        <p class="text-sm text-gray-600">Immersive slow-motion spins with instant sharing.</p>
+                    </div>
+                </div>
+                <div class="relative overflow-hidden rounded-2xl ring-1 ring-gray-200 bg-white tilt">
+                    <img src="/image/image.jpg" alt="Selfie Booth" class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <div class="font-semibold">Selfie Booth</div>
+                        <p class="text-sm text-gray-600">Compact setup, studio lighting, branded overlays.</p>
+                    </div>
+                </div>
+                <div class="relative overflow-hidden rounded-2xl ring-1 ring-gray-200 bg-white tilt">
+                    <img src="/image/wedding3.jpg" alt="Glam Booth" class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <div class="font-semibold">Glam Booth</div>
+                        <p class="text-sm text-gray-600">Monochrome glam with skin-smoothing filters.</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section class="bg-white/80 backdrop-blur-xl ring-1 ring-primary/5 rounded-2xl shadow-xl p-8 animate-on-scroll">
-            <div class="flex items-center justify-between mb-2">
-                <h2 class="text-lg font-semibold">Messages Received</h2>
-                <a href="{{ url('/messages') }}" class="text-sm text-primary hover:text-secondary">View all</a>
-            </div>
-            @if($recentMessages->isEmpty())
-                <div class="text-center text-gray-500 py-12">
-                    <div class="mx-auto w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center mb-3">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M2.94 6.34A2 2 0 014.6 5h10.8a2 2 0 011.66.94L10 11.5 2.94 6.34zM2 7.92V14a2 2 0 002 2h12a2 2 0 002-2V7.92l-7.4 4.93a2 2 0 01-2.2 0L2 7.92z"/></svg>
-                    </div>
-                    <div class="font-medium">No messages yet</div>
-                    <p class="text-sm">Messages from the contact form will appear here.</p>
-                    <a href="/#contact" class="mt-4 inline-block bg-gradient-to-r from-primary via-secondary to-accent text-white px-4 py-2 rounded-lg">Test Contact Form</a>
-                </div>
-            @else
-                <div class="overflow-x-auto -mx-4 sm:mx-0">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Name</th>
-                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Email</th>
-                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Event</th>
-                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Message</th>
-                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">When</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-100">
-                            @foreach($recentMessages as $msg)
-                                <tr class="hover:bg-primary/5 animate-on-scroll">
-                                    <td class="px-4 py-2">
-                                        <button type="button"
-                                                class="open-message text-primary hover:underline font-medium"
-                                                data-name="{{ $msg->first_name }} {{ $msg->last_name }}"
-                                                data-email="{{ $msg->email }}"
-                                                data-phone="{{ $msg->phone }}"
-                                                data-event="{{ $msg->event_type }}"
-                                                data-message="{{ $msg->message }}"
-                                                data-created="{{ $msg->created_at->format('Y-m-d H:i') }}">
-                                            {{ $msg->first_name }} {{ $msg->last_name }}
-                                        </button>
-                                    </td>
-                                    <td class="px-4 py-2"><a class="text-primary hover:underline" href="mailto:{{ $msg->email }}">{{ $msg->email }}</a></td>
-                                    <td class="px-4 py-2">{{ $msg->event_type }}</td>
-                                    <td class="px-4 py-2">{{ Str::limit($msg->message, 80) }}</td>
-                                    <td class="px-4 py-2 text-sm text-gray-500">{{ $msg->created_at->diffForHumans() }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-        </section>
-
-        <!-- Message Modal -->
-        <div id="messageModal" class="fixed inset-0 z-50 hidden">
-            <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" data-close-modal></div>
-            <div class="relative max-w-2xl mx-auto mt-20 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl ring-1 ring-primary/10 overflow-hidden animate-on-scroll">
-                <div class="absolute inset-0 pointer-events-none">
-                    <div class="parallax-element absolute -top-10 -left-10 w-40 h-40 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-3xl" data-speed="0.25"></div>
-                    <div class="parallax-element absolute -bottom-10 -right-10 w-56 h-56 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 blur-3xl" data-speed="0.15"></div>
-                    <div class="mouse-parallax absolute top-6 right-8 w-20 h-20 rounded-xl bg-gradient-to-br from-primary/15 to-accent/15 blur-xl" data-mouse-speed="18"></div>
-                </div>
-                <div class="relative p-6">
-                    <div class="flex items-start justify-between mb-4">
-                        <div>
-                            <div class="text-xs uppercase tracking-wider text-gray-500">Message from</div>
-                            <h3 class="text-2xl font-bold text-gray-800" id="modalName">Name</h3>
-                        </div>
-                        <button class="text-gray-500 hover:text-gray-700" data-close-modal aria-label="Close">✕</button>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div class="bg-white/70 rounded-lg p-4 ring-1 ring-gray-200">
-                            <div class="text-xs text-gray-500">Email</div>
-                            <div class="font-medium"><a id="modalEmail" class="text-primary hover:underline" href="#"></a></div>
-                        </div>
-                        <div class="bg-white/70 rounded-lg p-4 ring-1 ring-gray-200">
-                            <div class="text-xs text-gray-500">Phone</div>
-                            <div class="font-medium" id="modalPhone">—</div>
-                        </div>
-                        <div class="bg-white/70 rounded-lg p-4 ring-1 ring-gray-200">
-                            <div class="text-xs text-gray-500">Event</div>
-                            <div class="font-medium" id="modalEvent">—</div>
-                        </div>
-                        <div class="bg-white/70 rounded-lg p-4 ring-1 ring-gray-200">
-                            <div class="text-xs text-gray-500">Received</div>
-                            <div class="font-medium" id="modalCreated">—</div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-lg p-5 ring-1 ring-gray-200">
-                        <div class="text-xs text-gray-500 mb-2">Message</div>
-                        <p class="leading-relaxed text-gray-800 whitespace-pre-wrap" id="modalMessage"></p>
-                    </div>
-                    <div class="mt-6 flex items-center justify-end gap-3">
-                        <a id="modalReply" href="#" class="px-4 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white">Reply</a>
-                        <button class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50" data-close-modal>Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+        </main>
+    </div>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const elements = Array.from(document.querySelectorAll('.parallax-element'));
         const mouseEls = Array.from(document.querySelectorAll('.mouse-parallax'));
+        const tiltEls = Array.from(document.querySelectorAll('.tilt'));
         let mouseX = 0, mouseY = 0;
         const update = () => {
           const y = window.scrollY || window.pageYOffset;
@@ -280,47 +257,20 @@
         window.addEventListener('mousemove', (e) => {
           const cx = window.innerWidth / 2; const cy = window.innerHeight / 2;
           mouseX = (e.clientX - cx); mouseY = (e.clientY - cy);
-        });
-
-        // Modal wiring
-        const modal = document.getElementById('messageModal');
-        const openButtons = document.querySelectorAll('.open-message');
-        const closeEls = modal.querySelectorAll('[data-close-modal]');
-        const nameEl = document.getElementById('modalName');
-        const emailEl = document.getElementById('modalEmail');
-        const phoneEl = document.getElementById('modalPhone');
-        const eventEl = document.getElementById('modalEvent');
-        const createdEl = document.getElementById('modalCreated');
-        const messageEl = document.getElementById('modalMessage');
-        const replyEl = document.getElementById('modalReply');
-
-        const openModal = (data) => {
-          nameEl.textContent = data.name || 'Unknown';
-          emailEl.textContent = data.email || '—';
-          emailEl.href = data.email ? `mailto:${data.email}` : '#';
-          phoneEl.textContent = data.phone || '—';
-          eventEl.textContent = data.event || '—';
-          createdEl.textContent = data.created || '—';
-          messageEl.textContent = data.message || '';
-          if (data.email) replyEl.href = `mailto:${data.email}`; else replyEl.removeAttribute('href');
-          modal.classList.remove('hidden');
-          document.body.classList.add('overflow-hidden');
-        };
-
-        openButtons.forEach(btn => btn.addEventListener('click', () => {
-          openModal({
-            name: btn.dataset.name,
-            email: btn.dataset.email,
-            phone: btn.dataset.phone,
-            event: btn.dataset.event,
-            message: btn.dataset.message,
-            created: btn.dataset.created,
+          const maxTilt = 8; // degrees
+          tiltEls.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const px = (e.clientX - rect.left) / rect.width;
+            const py = (e.clientY - rect.top) / rect.height;
+            if (px >= 0 && px <= 1 && py >= 0 && py <= 1) {
+              const rx = (0.5 - py) * (maxTilt * 2);
+              const ry = (px - 0.5) * (maxTilt * 2);
+              el.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) scale3d(1.01,1.01,1.01)`;
+            }
           });
-        }));
+        });
+        tiltEls.forEach(el => el.addEventListener('mouseleave', () => { el.style.transform = 'rotateX(0deg) rotateY(0deg)'; }));
 
-        const closeModal = () => { modal.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); };
-        closeEls.forEach(el => el.addEventListener('click', closeModal));
-        window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal(); });
       });
     </script>
 </body>

@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Pin;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PinController extends Controller
 {
+    public function index(Request $request): View
+    {
+        $pins = Pin::where('user_id', $request->user()->id)->latest()->get();
+        return view('admin.pins', compact('pins'));
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([

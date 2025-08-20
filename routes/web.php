@@ -31,7 +31,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [AdminAuthController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
+    // Messages (admin)
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+
     // Pins
+    Route::get('/pins', [PinController::class, 'index'])->name('pins.index');
     Route::post('/pins', [PinController::class, 'store'])->name('pins.store');
     Route::delete('/pins/{pin}', [PinController::class, 'destroy'])->name('pins.destroy');
 });
