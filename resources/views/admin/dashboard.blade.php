@@ -109,10 +109,7 @@
                         <span class="inline-flex w-5"><svg class="w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="currentColor"><path d="M3 10a1 1 0 011-1h2v6H4a1 1 0 01-1-1v-4zm6-4a1 1 0 00-1 1v10h4V7a1 1 0 00-1-1H9zm6 6a1 1 0 00-1 1v4h2a1 1 0 001-1v-3a1 1 0 00-1-1h-1z"/></svg></span>
                         Stats
                     </a>
-                    <a href="{{ route('messages.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 text-gray-700">
-                        <span class="inline-flex w-5"><svg class="w-5 h-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H7l-4 3v-3H5a2 2 0 01-2-2V4z"/></svg></span>
-                        Messages
-                    </a>
+                    
                 </nav>
             </div>
         </aside>

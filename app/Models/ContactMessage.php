@@ -16,6 +16,9 @@ class ContactMessage extends Model
         'phone',
         'event_type',
         'message',
+        'admin_note',
+        'is_pinned',
+        'contact_message',
     ];
 }
 

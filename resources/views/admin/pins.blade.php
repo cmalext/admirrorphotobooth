@@ -81,7 +81,7 @@
                 @else
                     <div class="flex flex-col gap-4 relative">
                         @foreach($pins as $index => $pin)
-                            <div class="relative note tape bg-yellow-100/90 paper ring-1 ring-yellow-200 rounded-xl p-4 shadow-lg" style="--tilt: {{ [-2,-1,0,1,2][$index % 5] }}deg">
+                            <div class="relative bg-yellow-100/90 paper ring-1 ring-yellow-200 rounded-xl p-4 shadow-lg">
                                 <div class="flex items-start justify-between">
                                     <div>
                                         <div class="font-semibold text-yellow-900">{{ $pin->title }}</div>

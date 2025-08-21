@@ -53,10 +53,77 @@
                     <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h7.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 10.5l-9 5-9-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     Messages
                 </h1>
-                <div class="text-sm text-gray-500 bg-white/80 px-4 py-2 rounded-xl shadow border border-gray-200">Total: {{ $messages->total() }}</div>
+                <div class="flex items-center gap-3">
+                    <button id="openSearchModal" class="px-4 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white shadow hover:scale-105 transition">Search</button>
+                    <div class="text-sm text-gray-500 bg-white/80 px-4 py-2 rounded-xl shadow border border-gray-200">Total: {{ $messages->total() }}</div>
+                </div>
+        <!-- Search Modal -->
+        <div id="searchModal" class="fixed inset-0 z-50 hidden">
+            <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" data-close-search></div>
+            <div class="relative max-w-md mx-auto mt-24 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl ring-1 ring-primary/10 overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-24 h-24 bg-gradient-to-br from-primary/20 to-secondary/30 rounded-full blur-2xl z-0 parallax-float" data-speed="0.18"></div>
+                <div class="relative p-6 z-10">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-bold text-primary">Search Messages</h2>
+                        <button class="text-gray-500 hover:text-gray-700" data-close-search aria-label="Close">✕</button>
+                    </div>
+                    <form method="GET" action="" class="space-y-4">
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1" for="search_name">Name</label>
+                            <input type="text" id="search_name" name="name" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary" placeholder="Enter name">
+                        </div>
+                        <div class="relative">
+                            <label class="block text-xs text-gray-500 mb-1" for="search_event">Event</label>
+                            <input type="text" id="search_event" name="event" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary" placeholder="Select event type" autocomplete="off">
+                            <div id="eventOptions" class="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20 hidden">
+                                <div class="cursor-pointer px-4 py-2 hover:bg-primary/10" data-value="Wedding">Wedding</div>
+                                <div class="cursor-pointer px-4 py-2 hover:bg-primary/10" data-value="Corporate">Corporate</div>
+                                <div class="cursor-pointer px-4 py-2 hover:bg-primary/10" data-value="Birthday">Birthday</div>
+                                <div class="cursor-pointer px-4 py-2 hover:bg-primary/10" data-value="Other">Other</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1" for="search_date">Date</label>
+                            <input type="date" id="search_date" name="date" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary">
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button type="submit" class="px-4 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white">Search</button>
+                            <button type="button" class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50" data-close-search>Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
             </div>
 
             <div class="relative bg-white/95 backdrop-blur-xl ring-1 ring-primary/10 rounded-3xl shadow-2xl overflow-hidden px-2 py-6 md:p-8" style="box-shadow:0 8px 40px 0 rgba(140,80,20,0.10);">
+                <!-- Show current search criteria and Clear All button -->
+                @if(request('name') || request('event') || request('date'))
+                    <div class="flex flex-wrap items-center justify-between mb-4 gap-2 bg-primary/5 px-4 py-3 rounded-xl border border-primary/10">
+                        <div class="text-sm text-primary flex flex-wrap gap-3 items-center">
+                            <span class="font-semibold">Search:</span>
+                            @if(request('name'))
+                                <span class="inline-flex items-center bg-primary/10 rounded px-2 py-1 mr-1">
+                                    Name: <span class="font-bold ml-1">{{ request('name') }}</span>
+                                    <a href="{{ route('messages.index', array_filter(request()->except('name'))) }}" class="ml-2 text-xs text-primary hover:text-red-600 font-bold" title="Remove name filter">×</a>
+                                </span>
+                            @endif
+                            @if(request('event'))
+                                <span class="inline-flex items-center bg-primary/10 rounded px-2 py-1 mr-1">
+                                    Event: <span class="font-bold ml-1">{{ request('event') }}</span>
+                                    <a href="{{ route('messages.index', array_filter(request()->except('event'))) }}" class="ml-2 text-xs text-primary hover:text-red-600 font-bold" title="Remove event filter">×</a>
+                                </span>
+                            @endif
+                            @if(request('date'))
+                                <span class="inline-flex items-center bg-primary/10 rounded px-2 py-1 mr-1">
+                                    Date: <span class="font-bold ml-1">{{ request('date') }}</span>
+                                    <a href="{{ route('messages.index', array_filter(request()->except('date'))) }}" class="ml-2 text-xs text-primary hover:text-red-600 font-bold" title="Remove date filter">×</a>
+                                </span>
+                            @endif
+                        </div>
+                        <a href="{{ route('messages.index') }}" class="ml-auto px-3 py-1.5 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white text-xs font-semibold shadow hover:scale-105 transition">Clear All</a>
+                    </div>
+                @endif
                 <!-- Parallax floating shapes -->
                 <div class="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-br from-primary/20 to-secondary/30 rounded-full blur-2xl z-0 parallax-float" data-speed="0.2"></div>
                 <div class="absolute -bottom-16 right-10 w-56 h-56 bg-gradient-to-br from-accent/20 to-primary/10 rounded-full blur-3xl z-0 parallax-float" data-speed="0.3"></div>
@@ -70,7 +137,6 @@
                                 <th class="px-4 py-3 text-left text-xs font-bold text-primary uppercase tracking-wider">Email</th>
                                 <th class="px-4 py-3 text-left text-xs font-bold text-primary uppercase tracking-wider">Phone</th>
                                 <th class="px-4 py-3 text-left text-xs font-bold text-primary uppercase tracking-wider">Event</th>
-                                <th class="px-4 py-3 text-left text-xs font-bold text-primary uppercase tracking-wider">Message</th>
                                 <th class="px-4 py-3 text-left text-xs font-bold text-primary uppercase tracking-wider">Created</th>
                             </tr>
                         </thead>
@@ -92,7 +158,6 @@
                                     <td class="px-4 py-3 whitespace-nowrap"><a href="mailto:{{ $msg->email }}" class="text-primary hover:underline">{{ $msg->email }}</a></td>
                                     <td class="px-4 py-3 whitespace-nowrap">{{ $msg->phone }}</td>
                                     <td class="px-4 py-3 whitespace-nowrap">{{ $msg->event_type }}</td>
-                                    <td class="px-4 py-3">{{ Str::limit($msg->message, 120) }}</td>
                                     <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{{ $msg->created_at->diffForHumans() }}</td>
                                 </tr>
                             @empty
@@ -150,7 +215,7 @@
                     <div class="mt-6 flex items-center justify-end gap-3">
                         <!-- Save Note Button -->
                         <button id="modalSaveNote" type="button" class="px-4 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white">Save Note</button>
-                        <a id="modalReply" href="#" class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50">Reply</a>
+                        <a id="modalReply" href="#"></a>
                         <button class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50" data-close-modal>Close</button>
                         <!-- Hidden form for saving pin -->
                         <form id="saveNoteForm" action="{{ route('pins.store') }}" method="POST" class="hidden">
@@ -164,6 +229,50 @@
         </div>
 
         <script>
+            // Search Modal logic and event dropdown
+            document.addEventListener('DOMContentLoaded', () => {
+                const searchModal = document.getElementById('searchModal');
+                const openSearchBtn = document.getElementById('openSearchModal');
+                const closeSearchEls = searchModal.querySelectorAll('[data-close-search]');
+                openSearchBtn.addEventListener('click', () => {
+                    searchModal.classList.remove('hidden');
+                    document.body.classList.add('overflow-hidden');
+                });
+                const closeSearch = () => { searchModal.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); };
+                closeSearchEls.forEach(el => el.addEventListener('click', closeSearch));
+                window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !searchModal.classList.contains('hidden')) closeSearch(); });
+
+                // Event dropdown logic
+                const eventInput = document.getElementById('search_event');
+                const eventOptions = document.getElementById('eventOptions');
+                let eventDropdownOpen = false;
+
+                function showEventOptions() {
+                    eventOptions.classList.remove('hidden');
+                    eventDropdownOpen = true;
+                }
+                function hideEventOptions() {
+                    setTimeout(() => {
+                        eventOptions.classList.add('hidden');
+                        eventDropdownOpen = false;
+                    }, 120); // Delay to allow click
+                }
+                eventInput.addEventListener('focus', showEventOptions);
+                eventInput.addEventListener('input', showEventOptions);
+                eventInput.addEventListener('blur', hideEventOptions);
+                eventInput.addEventListener('mouseenter', showEventOptions);
+                eventInput.addEventListener('mouseleave', () => { if (!eventDropdownOpen) hideEventOptions(); });
+                eventOptions.addEventListener('mouseenter', showEventOptions);
+                eventOptions.addEventListener('mouseleave', hideEventOptions);
+                eventOptions.querySelectorAll('[data-value]').forEach(opt => {
+                    opt.addEventListener('mousedown', function(e) {
+                        e.preventDefault();
+                        eventInput.value = this.dataset.value;
+                        eventOptions.classList.add('hidden');
+                        eventDropdownOpen = false;
+                    });
+                });
+            });
             // Parallax effect for floating shapes
             document.addEventListener('mousemove', function(e) {
                 document.querySelectorAll('.parallax-float').forEach(function(el) {
