@@ -158,12 +158,12 @@
                         <div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
                             <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h5.5a.5.5 0 00.5-.5V13a2 2 0 012-2h3.5a.5.5 0 00.5-.5V5a2 2 0 00-2-2H4z"/></svg>
                         </div>
-                        <div class="font-medium">Bookings & Schedule</div>
+                        <div class="font-medium">Feedbacks & Rates </div>
                     </div>
-                    <p class="text-sm text-gray-600 mb-4">Manage upcoming events, client details, and shoot schedules.</p>
+                    <p class="text-sm text-gray-600 mb-4">“Manage client feedback, ratings, and service rates”.</p>
                     <div class="flex gap-2">
-                        <a href="#" class="px-3 py-2 rounded-lg ring-1 ring-gray-300 hover:bg-gray-50 text-sm">View Calendar</a>
-                        <a href="#" class="px-3 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white text-sm">Create Booking</a>
+                        <a href="{{ route('feedback.index') }}" class="px-3 py-2 rounded-lg ring-1 ring-gray-300 hover:bg-gray-50 text-sm">Manage Feedback</a>
+                        <a href="#" class="px-3 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white text-sm">View Public Feedback</a>
                     </div>
                 </div>
                 <div class="rounded-xl ring-1 ring-gray-200 p-5 bg-gradient-to-br from-white to-secondary/5 tilt">
@@ -175,8 +175,9 @@
                     </div>
                     <p class="text-sm text-gray-600 mb-4">Standardize your photobooth packages and share quotes fast.</p>
                     <div class="flex gap-2">
-                        <a href="#" class="px-3 py-2 rounded-lg ring-1 ring-gray-300 hover:bg-gray-50 text-sm">Manage Packages</a>
-                        <a href="#" class="px-3 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white text-sm">Send Quote</a>
+                        <a href="{{ route('packages.index') }}" class="px-3 py-2 rounded-lg ring-1 ring-gray-300 hover:bg-gray-50 text-sm">Manage Packages</a>
+                        <a href="{{ route('packages.create') }}" class="px-3 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white text-sm">Add New Package</a>
+                        
                     </div>
                 </div>
                 <div class="rounded-xl ring-1 ring-gray-200 p-5 bg-gradient-to-br from-white to-accent/5 tilt">
@@ -188,8 +189,9 @@
                     </div>
                     <p class="text-sm text-gray-600 mb-4">Keep your portfolio fresh and share highlights with clients.</p>
                     <div class="flex gap-2">
-                        <a href="/gallery/corporate" class="px-3 py-2 rounded-lg ring-1 ring-gray-300 hover:bg-gray-50 text-sm">View Gallery</a>
-                        <a href="#" class="px-3 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white text-sm">Upload Photos</a>
+
+                        <a href="{{ route('photos.index') }}" class="px-3 py-2 rounded-lg ring-1 ring-gray-300 hover:bg-gray-50 text-sm">Manage Photos</a>
+                        <a href="/" target="_blank" class="px-3 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white text-sm">View Public Page</a>
                     </div>
                 </div>
             </div>

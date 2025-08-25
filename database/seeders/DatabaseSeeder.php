@@ -20,5 +20,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
             'password' => Hash::make('password'), // 👈 set your custom password
         ]);
+        
+        // Seed sample packages
+        $this->call([
+            PackageSeeder::class,
+            PhotoSeeder::class,
+        ]);
     }
 }

@@ -146,185 +146,76 @@
       </div>
     </div>
     <div class="parallax-container relative">
-      <!-- Birthday Photo 1 with Message -->
-      <div class="mb-32 relative">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <!-- Image with Parallax -->
-          <div class="relative overflow-hidden rounded-2xl shadow-2xl">
-            <img src="/image/birthday1.jpg" alt="Birthday Party 1" 
-                 class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
-                 data-speed="0.3">
-            <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
-          </div>
-          <!-- Centered Message -->
-          <div class="text-center lg:text-left">
-            <div class="scroll-message" data-scroll="1">
-              <div class="mb-6">
-                <i class="fas fa-birthday-cake text-4xl text-orange-400 mb-4"></i>
-                <h3 class="text-3xl font-bold text-gray-800 mb-4">Birthday Fun</h3>
-                <p class="text-lg text-gray-600 leading-relaxed">
-                  Laughter, games, and memories made. Capture the joy of your birthday party with our interactive photo booth.
-                </p>
+      @forelse($photos as $index => $photo)
+        <div class="mb-32 relative">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            @if($index % 2 == 0)
+              <!-- Image with Parallax (Left) -->
+              <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                <img src="{{ $photo->imageUrl }}" alt="{{ $photo->title }}" 
+                     class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
+                     data-speed="{{ 0.3 + ($index * 0.1) }}">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
               </div>
-              <div class="flex items-center justify-center lg:justify-start space-x-4">
-                <span class="text-sm text-primary font-semibold">Birthday Party</span>
-                <div class="w-8 h-px bg-primary"></div>
-                <span class="text-sm text-gray-500">Scroll to continue</span>
+              
+              <!-- Centered Message (Right) -->
+              <div class="text-center lg:text-left">
+                <div class="scroll-message" data-scroll="{{ $index + 1 }}">
+                  <div class="mb-6">
+                    <i class="fas fa-birthday-cake text-4xl text-orange-400 mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">{{ $photo->title }}</h3>
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                      {{ $photo->description ?: 'Laughter, games, and memories made. Capture the joy of your birthday party with our interactive photo booth.' }}
+                    </p>
+                  </div>
+                  <div class="flex items-center justify-center lg:justify-start space-x-4">
+                    <span class="text-sm text-primary font-semibold">Birthday Party</span>
+                    <div class="w-8 h-px bg-primary"></div>
+                    <span class="text-sm text-gray-500">{{ $index == count($photos) - 1 ? 'Final moments' : 'Scroll to continue' }}</span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Birthday Photo 2 with Message -->
-      <div class="mb-32 relative">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <!-- Centered Message -->
-          <div class="text-center lg:text-right order-2 lg:order-1">
-            <div class="scroll-message" data-scroll="2">
-              <div class="mb-6">
-                <i class="fas fa-gift text-4xl text-primary mb-4"></i>
-                <h3 class="text-3xl font-bold text-gray-800 mb-4">Surprise Moments</h3>
-                <p class="text-lg text-gray-600 leading-relaxed">
-                  Unwrap the excitement! Every birthday is filled with surprises and smiles to remember.
-                </p>
+            @else
+              <!-- Centered Message (Left) -->
+              <div class="text-center lg:text-right order-2 lg:order-1">
+                <div class="scroll-message" data-scroll="{{ $index + 1 }}">
+                  <div class="mb-6">
+                    <i class="fas fa-gift text-4xl text-primary mb-4"></i>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">{{ $photo->title }}</h3>
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                      {{ $photo->description ?: 'Unwrap the excitement! Every birthday is filled with surprises and smiles to remember.' }}
+                    </p>
+                  </div>
+                  <div class="flex items-center justify-center lg:justify-end space-x-4">
+                    <span class="text-sm text-gray-500">{{ $index == count($photos) - 1 ? 'Ready to begin?' : 'Keep scrolling' }}</span>
+                    <div class="w-8 h-px bg-primary"></div>
+                    <span class="text-sm text-primary font-semibold">Birthday Party</span>
+                  </div>
+                </div>
               </div>
-              <div class="flex items-center justify-center lg:justify-end space-x-4">
-                <span class="text-sm text-gray-500">Keep scrolling</span>
-                <div class="w-8 h-px bg-primary"></div>
-                <span class="text-sm text-primary font-semibold">Birthday Party</span>
+              
+              <!-- Image with Parallax (Right) -->
+              <div class="relative overflow-hidden rounded-2xl shadow-2xl order-1 lg:order-2">
+                <img src="{{ $photo->imageUrl }}" alt="{{ $photo->title }}" 
+                     class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
+                     data-speed="{{ 0.3 + ($index * 0.1) }}">
+                <div class="absolute inset-0 bg-gradient-to-l from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
               </div>
-            </div>
-          </div>
-          <!-- Image with Parallax -->
-          <div class="relative overflow-hidden rounded-2xl shadow-2xl order-1 lg:order-2">
-            <img src="/image/birthday2.jpg" alt="Birthday Party 2" 
-                 class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
-                 data-speed="0.4">
-            <div class="absolute inset-0 bg-gradient-to-l from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Birthday Photo 3 with Message -->
-      <div class="mb-32 relative">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <!-- Image with Parallax -->
-          <div class="relative overflow-hidden rounded-2xl shadow-2xl">
-            <img src="/image/birthday3.jpg" alt="Birthday Party 3" 
-                 class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
-                 data-speed="0.5">
-            <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
-          </div>
-          <!-- Centered Message -->
-          <div class="text-center lg:text-left">
-            <div class="scroll-message" data-scroll="3">
-              <div class="mb-6">
-                <i class="fas fa-smile-beam text-4xl text-yellow-400 mb-4"></i>
-                <h3 class="text-3xl font-bold text-gray-800 mb-4">Smiles All Around</h3>
-                <p class="text-lg text-gray-600 leading-relaxed">
-                  Happy faces, silly poses, and endless fun. Our booth brings out the best in every guest!
-                </p>
-              </div>
-              <div class="flex items-center justify-center lg:justify-start space-x-4">
-                <span class="text-sm text-primary font-semibold">Birthday Party</span>
-                <div class="w-8 h-px bg-primary"></div>
-                <span class="text-sm text-gray-500">More to discover</span>
-              </div>
-            </div>
+            @endif
           </div>
         </div>
-      </div>
-
-      <!-- Birthday Photo 4 with Message -->
-      <div class="mb-32 relative">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <!-- Centered Message -->
-          <div class="text-center lg:text-right order-2 lg:order-1">
-            <div class="scroll-message" data-scroll="4">
-              <div class="mb-6">
-                <i class="fas fa-magic text-4xl text-secondary mb-4"></i>
-                <h3 class="text-3xl font-bold text-gray-800 mb-4">Magical Memories</h3>
-                <p class="text-lg text-gray-600 leading-relaxed">
-                  Every birthday is a little bit magical. Let us help you capture those enchanting moments forever.
-                </p>
-              </div>
-              <div class="flex items-center justify-center lg:justify-end space-x-4">
-                <span class="text-sm text-gray-500">Almost there</span>
-                <div class="w-8 h-px bg-primary"></div>
-                <span class="text-sm text-primary font-semibold">Birthday Party</span>
-              </div>
-            </div>
-          </div>
-          <!-- Image with Parallax -->
-          <div class="relative overflow-hidden rounded-2xl shadow-2xl order-1 lg:order-2">
-            <img src="/image/birthday4.jpg" alt="Birthday Party 4" 
-                 class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
-                 data-speed="0.6">
-            <div class="absolute inset-0 bg-gradient-to-l from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+      @empty
+        <!-- Fallback content when no photos exist -->
+        <div class="text-center py-20">
+          <div class="mb-8">
+            <i class="fas fa-birthday-cake text-6xl text-gray-300 mb-4"></i>
+            <h3 class="text-2xl font-bold text-gray-600 mb-4">No Birthday Party Photos Yet</h3>
+            <p class="text-lg text-gray-500">
+              Our birthday gallery is being prepared. Check back soon for fun party moments!
+            </p>
           </div>
         </div>
-      </div>
-
-      <!-- Birthday Photo 5 with Message -->
-      <div class="mb-32 relative">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <!-- Image with Parallax -->
-          <div class="relative overflow-hidden rounded-2xl shadow-2xl">
-            <img src="/image/birthday5.jpg" alt="Birthday Party 5" 
-                 class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
-                 data-speed="0.7">
-            <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
-          </div>
-          <!-- Centered Message -->
-          <div class="text-center lg:text-left">
-            <div class="scroll-message" data-scroll="5">
-              <div class="mb-6">
-                <i class="fas fa-crown text-4xl text-orange-400 mb-4"></i>
-                <h3 class="text-3xl font-bold text-gray-800 mb-4">Party Royalty</h3>
-                <p class="text-lg text-gray-600 leading-relaxed">
-                  Every birthday star deserves the royal treatment. Celebrate big and make memories that last a lifetime.
-                </p>
-              </div>
-              <div class="flex items-center justify-center lg:justify-start space-x-4">
-                <span class="text-sm text-primary font-semibold">Birthday Party</span>
-                <div class="w-8 h-px bg-primary"></div>
-                <span class="text-sm text-gray-500">Final moments</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Birthday Photo 6 with Message -->
-      <div class="mb-32 relative">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <!-- Centered Message -->
-          <div class="text-center lg:text-right order-2 lg:order-1">
-            <div class="scroll-message" data-scroll="6">
-              <div class="mb-6">
-                <i class="fas fa-infinity text-4xl text-accent mb-4"></i>
-                <h3 class="text-3xl font-bold text-gray-800 mb-4">Endless Fun</h3>
-                <p class="text-lg text-gray-600 leading-relaxed">
-                  The fun never ends when you celebrate with us. Here’s to many more birthdays and memories together!
-                </p>
-              </div>
-              <div class="flex items-center justify-center lg:justify-end space-x-4">
-                <span class="text-sm text-gray-500">Ready to begin?</span>
-                <div class="w-8 h-px bg-primary"></div>
-                <span class="text-sm text-primary font-semibold">Birthday Party</span>
-              </div>
-            </div>
-          </div>
-          <!-- Image with Parallax -->
-          <div class="relative overflow-hidden rounded-2xl shadow-2xl order-1 lg:order-2">
-            <img src="/image/birthday6.jpg" alt="Birthday Party 6" 
-                 class="parallax-image w-full h-96 lg:h-[500px] object-cover" 
-                 data-speed="0.8">
-            <div class="absolute inset-0 bg-gradient-to-l from-primary/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
-          </div>
-        </div>
-      </div>
+      @endforelse
     </div>
     <div class="text-center mt-16">
       <div class="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-8">

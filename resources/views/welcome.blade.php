@@ -56,6 +56,20 @@
       100% { transform: scale(1); background: transparent; }
     }
   </style>
+  <style>
+    @keyframes slideInRight {
+      from { transform: translateX(40px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .animate-slide-in-right {
+      animation: slideInRight 0.8s ease-out both;
+    }
+    @keyframes float-slow { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-10px) } }
+    .float-slow { animation: float-slow 8s ease-in-out infinite; }
+    /* Hide native scrollbar for carousel */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
 <body class="relative min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 overflow-x-hidden font-inter">
 
@@ -349,63 +363,110 @@
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <!-- Basic Package -->
-      <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl hover:scale-105 transition-transform duration-300">
-        <div class="text-center mb-8">
-          <h3 class="text-2xl font-bold text-gray-800 mb-4">Basic</h3>
-          <div class="text-4xl font-bold text-primary mb-2">$299</div>
-          <div class="text-gray-600">per event</div>
+      @forelse($packages as $index => $package)
+        @php
+          $isPopular = $index === 1; // Make the second package popular
+          $bgClass = $isPopular ? 'bg-gradient-to-br from-primary to-secondary' : 'bg-white';
+          $textClass = $isPopular ? 'text-white' : 'text-gray-800';
+          $priceClass = $isPopular ? 'text-white' : 'text-primary';
+          $subtextClass = $isPopular ? 'text-white/80' : 'text-gray-600';
+          $checkColor = $isPopular ? 'text-white' : 'text-green-500';
+          $buttonClass = $isPopular ? 'bg-white text-primary hover:bg-gray-100' : 'bg-gray-200 text-gray-800 hover:bg-gray-300';
+        @endphp
+        
+        <div class="{{ $bgClass }} rounded-2xl shadow-lg p-8 hover:shadow-xl hover:scale-105 transition-transform duration-300">
+          <div class="text-center mb-8">
+            @if($isPopular)
+              <div class="bg-white text-primary px-4 py-1 rounded-full text-sm font-semibold inline-block mb-4">Most Popular</div>
+            @endif
+            <h3 class="text-2xl font-bold {{ $textClass }} mb-4">{{ $package->name }}</h3>
+            <div class="text-4xl font-bold {{ $priceClass }} mb-2">${{ number_format($package->price, 2) }}</div>
+            <div class="{{ $subtextClass }}">per event</div>
+            @if($package->duration)
+              <div class="text-sm {{ $subtextClass }} mt-2">{{ $package->duration }}</div>
+            @endif
+          </div>
+          
+          @if($package->features && count($package->features) > 0)
+            <ul class="space-y-4 mb-8">
+              @foreach($package->features as $feature)
+                @if(!empty(trim($feature)))
+                  <li class="flex items-center">
+                    <i class="fas fa-check {{ $checkColor }} mr-3"></i> 
+                    <span class="{{ $textClass }}">{{ $feature }}</span>
+                  </li>
+                @endif
+              @endforeach
+            </ul>
+          @endif
+          
+          @if($package->description)
+            <p class="text-sm {{ $subtextClass }} mb-6 text-center">{{ $package->description }}</p>
+          @endif
+          
+          <a href="#contact" class="w-full {{ $buttonClass }} py-3 rounded-full font-semibold text-center block transition-colors duration-300">
+            Book {{ $package->name }}
+          </a>
         </div>
-        <ul class="space-y-4 mb-8">
-          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>2 hours of photo booth time</span></li>
-          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Unlimited photos</span></li>
-          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Basic props included</span></li>
-          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Digital copies</span></li>
-        </ul>
-        <a href="#contact" class="w-full bg-gray-200 text-gray-800 py-3 rounded-full font-semibold text-center block hover:bg-gray-300 transition-colors duration-300">Book Basic</a>
-      </div>
-      
-      <!-- Premium Package -->
-      <div class="bg-gradient-to-br from-primary to-secondary rounded-2xl shadow-lg p-8 hover:shadow-xl hover:scale-110 transition-transform duration-300">
-        <div class="text-center mb-8">
-          <div class="bg-white text-primary px-4 py-1 rounded-full text-sm font-semibold inline-block mb-4">Most Popular</div>
-          <h3 class="text-2xl font-bold text-white mb-4">Premium</h3>
-          <div class="text-4xl font-bold text-white mb-2">$499</div>
-          <div class="text-white/80">per event</div>
+      @empty
+        <!-- Fallback packages if none exist -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl hover:scale-105 transition-transform duration-300">
+          <div class="text-center mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Basic</h3>
+            <div class="text-4xl font-bold text-primary mb-2">$299</div>
+            <div class="text-gray-600">per event</div>
+          </div>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>2 hours of photo booth time</span></li>
+            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Unlimited photos</span></li>
+            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Basic props included</span></li>
+          </ul>
+          <a href="#contact" class="w-full bg-gray-200 text-gray-800 py-3 rounded-full font-semibold text-center block hover:bg-gray-300 transition-colors duration-300">Book Basic</a>
         </div>
-        <ul class="space-y-4 mb-8">
-          <li class="flex items-center"><i class="fas fa-check text-white mr-3"></i> <span class="text-white">4 hours of photo booth time</span></li>
-          <li class="flex items-center"><i class="fas fa-check text-white mr-3"></i> <span class="text-white">Unlimited photos & prints</span></li>
-          <li class="flex items-center"><i class="fas fa-check text-white mr-3"></i> <span class="text-white">Premium props & backdrops</span></li>
-          <li class="flex items-center"><i class="fas fa-check text-white mr-3"></i> <span class="text-white">Custom photo design</span></li>
-          <li class="flex items-center"><i class="fas fa-check text-white mr-3"></i> <span class="text-white">Social media sharing</span></li>
-        </ul>
-        <a href="#contact" class="w-full bg-white text-primary py-3 rounded-full font-semibold text-center block hover:bg-gray-100 transition-colors duration-300">Book Premium</a>
-      </div>
-      
-      <!-- Luxury Package -->
-      <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl hover:scale-105 transition-transform duration-300">
-        <div class="text-center mb-8">
-          <h3 class="text-2xl font-bold text-gray-800 mb-4">Luxury</h3>
-          <div class="text-4xl font-bold text-primary mb-2">$799</div>
-          <div class="text-gray-600">per event</div>
+        
+        <div class="bg-gradient-to-br from-primary to-secondary rounded-2xl shadow-lg p-8 hover:shadow-xl hover:scale-110 transition-transform duration-300">
+          <div class="text-center mb-8">
+            <div class="bg-white text-primary px-4 py-1 rounded-full text-sm font-semibold inline-block mb-4">Most Popular</div>
+            <h3 class="text-2xl font-bold text-white mb-4">Premium</h3>
+            <div class="text-4xl font-bold text-white mb-2">$499</div>
+            <div class="text-white/80">per event</div>
+          </div>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center"><i class="fas fa-check text-white mr-3"></i> <span class="text-white">4 hours of photo booth time</span></li>
+            <li class="flex items-center"><i class="fas fa-check text-white mr-3"></i> <span class="text-white">Unlimited photos & prints</span></li>
+            <li class="flex items-center"><i class="fas fa-check text-white mr-3"></i> <span class="text-white">Premium props & backdrops</span></li>
+          </ul>
+          <a href="#contact" class="w-full bg-white text-primary py-3 rounded-full font-semibold text-center block hover:bg-gray-100 transition-colors duration-300">Book Premium</a>
         </div>
-        <ul class="space-y-4 mb-8">
-          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>6 hours of photo booth time</span></li>
-          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Everything in Premium</span></li>
-          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Professional attendant</span></li>
-          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Custom backdrop design</span></li>
-          <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Photo album included</span></li>
-        </ul>
-        <a href="#contact" class="w-full bg-gray-200 text-gray-800 py-3 rounded-full font-semibold text-center block hover:bg-gray-300 transition-colors duration-300">Book Luxury</a>
-      </div>
+        
+        <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl hover:scale-105 transition-transform duration-300">
+          <div class="text-center mb-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Luxury</h3>
+            <div class="text-4xl font-bold text-primary mb-2">$799</div>
+            <div class="text-gray-600">per event</div>
+          </div>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>6 hours of photo booth time</span></li>
+            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Everything in Premium</span></li>
+            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i> <span>Professional attendant</span></li>
+          </ul>
+          <a href="#contact" class="w-full bg-gray-200 text-gray-800 py-3 rounded-full font-semibold text-center block hover:bg-gray-300 transition-colors duration-300">Book Luxury</a>
+        </div>
+      @endforelse
     </div>
+   
   </div>
 </section>
 
 <!-- Gallery Section -->
-<section id="gallery" class="py-20 bg-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section id="gallery" class="py-20 bg-white relative overflow-hidden">
+  <!-- Parallax Background for Gallery -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="parallax-element absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-3xl" data-speed="0.15"></div>
+    <div class="parallax-element absolute top-1/3 -right-12 w-56 h-56 bg-gradient-to-br from-accent/10 to-primary/10 rounded-full blur-3xl" data-speed="0.25"></div>
+    <div class="parallax-element absolute bottom-0 left-1/3 w-48 h-48 bg-gradient-to-br from-secondary/10 to-accent/10 rounded-full blur-3xl" data-speed="0.1"></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="text-center mb-16">
       <h2 class="text-4xl font-bold text-gray-800 mb-4">Gallery</h2>
       <p class="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -413,46 +474,101 @@
       </p>
     </div>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  <a href="{{ url('gallery/wedding') }}" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block">
-     <video src="image/3.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
-     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-       <div class="p-6 text-white">
-         <h3 class="text-lg font-semibold">Wedding Celebration</h3>
-         <p class="text-sm">Beautiful moments captured</p>
-         <div class="flex items-center mt-2">
-           <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view gallery</span>
-         </div>
-       </div>
-     </div>
-   </a>
-  
-  <a href="{{ url('gallery/corporate') }}" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block">
-     <video src="image/2.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
-     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-       <div class="p-6 text-white">
-         <h3 class="text-lg font-semibold">Corporate Event</h3>
-         <p class="text-sm">Professional team building</p>
-         <div class="flex items-center mt-2">
-           <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view gallery</span>
-         </div>
-       </div>
-     </div>
-   </a>
-  
-  <a href="{{ url('gallery/birthday') }}" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block">
-     <video src="image/1.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
-     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-       <div class="p-6 text-white">
-         <h3 class="text-lg font-semibold">Birthday Party</h3>
-         <p class="text-sm">Fun and laughter guaranteed</p>
-         <div class="flex items-center mt-2">
-           <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view gallery</span>
-         </div>
-       </div>
-     </div>
-   </a>
-</div>
+    <div class="relative">
+      <button type="button" aria-label="Previous" onclick="carouselPrev()" class="hidden sm:flex absolute -left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white shadow hover:shadow-md border border-gray-200 items-center justify-center">
+        <svg class="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <button type="button" aria-label="Next" onclick="carouselNext()" class="hidden sm:flex absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white shadow hover:shadow-md border border-gray-200 items-center justify-center">
+        <svg class="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <div id="galleryCarousel" class="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth pb-2">
+        <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-[32%] snap-start">
+          <!-- Wedding Container -->
+          <button onclick="openPublicEventModal('Wedding')" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block w-full text-left animate-slide-in-right">
+            <div class="absolute -top-8 -left-8 w-28 h-28 bg-white/10 rounded-full blur-2xl float-slow"></div>
+            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-black/10 rounded-full blur-2xl float-slow" style="animation-delay:-2s"></div>
+            <video src="image/3.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-6 text-white">
+                <h3 class="text-lg font-semibold">Wedding Celebration</h3>
+                <p class="text-sm">Beautiful moments captured</p>
+                <div class="flex items-center mt-2">
+                  <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view photos</span>
+                </div>
+              </div>
+            </div>
+          </button>
+        </div>
+        <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-[32%] snap-start">
+          <!-- Corporate Container -->
+          <button onclick="openPublicEventModal('Corporate Event')" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block w-full text-left animate-slide-in-right">
+            <div class="absolute -top-8 -left-8 w-28 h-28 bg-white/10 rounded-full blur-2xl float-slow"></div>
+            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-black/10 rounded-full blur-2xl float-slow" style="animation-delay:-2s"></div>
+            <video src="image/2.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-6 text-white">
+                <h3 class="text-lg font-semibold">Corporate Event</h3>
+                <p class="text-sm">Professional team building</p>
+                <div class="flex items-center mt-2">
+                  <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view photos</span>
+                </div>
+              </div>
+            </div>
+          </button>
+        </div>
+        <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-[32%] snap-start">
+          <!-- Birthday Container -->
+          <button onclick="openPublicEventModal('Birthday Party')" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block w-full text-left animate-slide-in-right">
+            <div class="absolute -top-8 -left-8 w-28 h-28 bg-white/10 rounded-full blur-2xl float-slow"></div>
+            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-black/10 rounded-full blur-2xl float-slow" style="animation-delay:-2s"></div>
+            <video src="image/1.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-6 text-white">
+                <h3 class="text-lg font-semibold">Birthday Party</h3>
+                <p class="text-sm">Fun and laughter guaranteed</p>
+                <div class="flex items-center mt-2">
+                  <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view photos</span>
+                </div>
+              </div>
+            </div>
+          </button>
+        </div>
+        <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-[32%] snap-start">
+          <!-- Graduation Container -->
+          <button onclick="openPublicEventModal('Graduation')" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block w-full text-left animate-slide-in-right">
+            <div class="absolute -top-8 -left-8 w-28 h-28 bg-white/10 rounded-full blur-2xl float-slow"></div>
+            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-black/10 rounded-full blur-2xl float-slow" style="animation-delay:-2s"></div>
+            <img src="image/mirror.webp" alt="Graduation" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-6 text-white">
+                <h3 class="text-lg font-semibold">Graduation</h3>
+                <p class="text-sm">Achievements worth celebrating</p>
+                <div class="flex items-center mt-2">
+                  <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view photos</span>
+                </div>
+              </div>
+            </div>
+          </button>
+        </div>
+        <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-[32%] snap-start">
+          <!-- Special Event Container -->
+          <button onclick="openPublicEventModal('Other')" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block w-full text-left animate-slide-in-right">
+            <div class="absolute -top-8 -left-8 w-28 h-28 bg-white/10 rounded-full blur-2xl float-slow"></div>
+            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-black/10 rounded-full blur-2xl float-slow" style="animation-delay:-2s"></div>
+            <img src="image/image.jpg" alt="Special Event" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+              <div class="p-6 text-white">
+                <h3 class="text-lg font-semibold">Special Event</h3>
+                <p class="text-sm">Unique moments and occasions</p>
+                <div class="flex items-center mt-2">
+                  <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view photos</span>
+                </div>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
 
     </div>
   </div>
@@ -534,6 +650,12 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="mt-10 text-center">
+      <button onclick="openFeedbackModal()" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-primary via-secondary to-accent text-white font-semibold hover:shadow-lg transition-all">
+        <i class="fas fa-pen"></i>
+        Give Feedback
+      </button>
     </div>
   </div>
 </section>
@@ -720,7 +842,172 @@
   </div>
 </footer>
 
+<!-- Public Feedback Modal -->
+<div id="feedbackModal" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+  <div class="relative min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden">
+      <div class="flex items-center justify-between p-6 border-b border-gray-200">
+        <div>
+          <h3 class="text-2xl font-bold text-gray-900">Share Your Feedback</h3>
+          <p class="text-gray-600 mt-1">Tell us how we did. Your review helps us improve.</p>
+        </div>
+        <button onclick="closeFeedbackModal()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <form method="POST" action="{{ route('feedback.storePublic') }}" class="p-6 space-y-5">
+        @csrf
+        @if (session('status'))
+          <div class="mb-4 rounded-lg bg-green-50 border border-green-200 text-green-800 px-4 py-3">{{ session('status') }}</div>
+        @endif
+        @if ($errors->any())
+          <div class="mb-4 rounded-lg bg-red-50 border border-red-200 text-red-800 px-4 py-3">
+            <ul class="list-disc list-inside">
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
+            <input name="name" value="{{ old('name') }}" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2 text-gray-700">Email (optional)</label>
+            <input name="email" value="{{ old('email') }}" type="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Rate Us</label>
+          <div class="flex items-center gap-2" id="ratingStars">
+            <input type="hidden" name="rating" id="ratingValue" value="{{ old('rating', 5) }}">
+            <button type="button" data-value="1" class="star p-1 text-2xl text-amber-300">★</button>
+            <button type="button" data-value="2" class="star p-1 text-2xl text-amber-300">★</button>
+            <button type="button" data-value="3" class="star p-1 text-2xl text-amber-300">★</button>
+            <button type="button" data-value="4" class="star p-1 text-2xl text-amber-300">★</button>
+            <button type="button" data-value="5" class="star p-1 text-2xl text-amber-300">★</button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Your Feedback</label>
+          <textarea name="comment" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" required>{{ old('comment') }}</textarea>
+        </div>
+        <div class="flex justify-end gap-3">
+          <button type="button" onclick="closeFeedbackModal()" class="px-5 py-3 rounded-lg ring-1 ring-gray-300 hover:bg-gray-50">Cancel</button>
+          <button type="submit" class="px-5 py-3 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+ </div>
+
+<div id="publicEventModal" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+  <div class="relative min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden">
+      <div class="flex items-center justify-between p-6 border-b border-gray-200">
+        <div>
+          <h3 id="publicModalTitle" class="text-2xl font-bold text-gray-900">Event Gallery</h3>
+          <p id="publicModalSubtitle" class="text-gray-600 mt-1">Photos from this event category</p>
+        </div>
+        <button onclick="closePublicEventModal()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+        <div id="publicModalEmpty" class="hidden text-center py-12">
+          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">No Photos Yet</h3>
+          <p class="text-gray-600">Photos for this event type will appear here once uploaded.</p>
+        </div>
+        <div id="publicModalPhotos"></div>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
+  const PHOTOS_BY_EVENT = @json($photosByEvent ?? []);
+  function openPublicEventModal(eventType){
+    const titleMap = {
+      'Wedding': 'Wedding Celebration Gallery',
+      'Corporate Event': 'Corporate Events Gallery',
+      'Birthday Party': 'Birthday Parties Gallery',
+      'Graduation': 'Graduation Gallery',
+      'Other': 'Special Events Gallery'
+    };
+    document.getElementById('publicModalTitle').textContent = titleMap[eventType] || 'Event Gallery';
+    document.getElementById('publicModalSubtitle').textContent = 'Click any photo to view in full';
+
+    const container = document.getElementById('publicModalPhotos');
+    const empty = document.getElementById('publicModalEmpty');
+    const photos = PHOTOS_BY_EVENT[eventType] || [];
+
+    if(photos.length === 0){
+      empty.classList.remove('hidden');
+      container.innerHTML = '';
+    } else {
+      empty.classList.add('hidden');
+      container.innerHTML = `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">${photos.map(p => `
+        <div class=\"bg-gray-50 rounded-lg p-3\">
+          <img src=\"${p.image_url || ('/storage/' + p.image_path)}\" alt=\"${p.title || ''}\" class=\"w-full h-48 object-cover rounded-md mb-3\">
+          ${p.title ? `<h4 class=\"font-semibold text-gray-900\">${p.title}</h4>` : ''}
+          ${p.description ? `<p class=\"text-sm text-gray-600\">${p.description}</p>` : ''}
+        </div>`).join('')}</div>`;
+    }
+    document.getElementById('publicEventModal').classList.remove('hidden');
+  }
+  function closePublicEventModal(){
+    document.getElementById('publicEventModal').classList.add('hidden');
+  }
+  document.getElementById('publicEventModal').addEventListener('click', function(e){
+    if(e.target === this){ closePublicEventModal(); }
+  });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closePublicEventModal(); });
+</script>
+
+<script>
+  // Feedback modal controls
+  function openFeedbackModal(){ document.getElementById('feedbackModal').classList.remove('hidden'); }
+  function closeFeedbackModal(){ document.getElementById('feedbackModal').classList.add('hidden'); }
+  document.addEventListener('click', (e) => {
+    const modal = document.getElementById('feedbackModal');
+    if (!modal) return;
+    if (e.target === modal) closeFeedbackModal();
+  });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeFeedbackModal(); });
+
+  // Star rating logic
+  (function(){
+    const stars = document.querySelectorAll('#ratingStars .star');
+    const input = document.getElementById('ratingValue');
+    if(!stars.length || !input) return;
+    function paint(value){
+      stars.forEach(star => {
+        const v = parseInt(star.dataset.value);
+        star.style.color = v <= value ? '#f59e0b' : '#d1d5db';
+      });
+    }
+    paint(parseInt(input.value || '5'));
+    stars.forEach(star => {
+      star.addEventListener('mouseenter', () => paint(parseInt(star.dataset.value)));
+      star.addEventListener('mouseleave', () => paint(parseInt(input.value || '5')));
+      star.addEventListener('click', () => { input.value = star.dataset.value; paint(parseInt(input.value)); });
+    });
+  })();
+  // Gallery Carousel Controls
+  const carousel = document.getElementById('galleryCarousel');
+  function carouselNext(){ if(!carousel) return; carousel.scrollBy({ left: carousel.clientWidth * 0.9, behavior: 'smooth' }); }
+  function carouselPrev(){ if(!carousel) return; carousel.scrollBy({ left: -carousel.clientWidth * 0.9, behavior: 'smooth' }); }
+
   // Enhanced Mobile Menu Controller
   class MobileMenuController {
     constructor() {
