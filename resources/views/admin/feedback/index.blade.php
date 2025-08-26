@@ -29,7 +29,7 @@
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-bold text-gray-900">Manage Feedback</h1>
-        <p class="text-gray-600 mt-1">Review, edit, approve, or delete user feedback.</p>
+        <p class="text-gray-600 mt-1">Review and manage user feedback submissions.</p>
       </div>
     </div>
 
@@ -51,7 +51,7 @@
             </div>
             <p class="text-gray-700 text-sm flex-1">{{ $item->comment }}</p>
             <div class="flex gap-2 mt-4">
-              <a href="{{ route('feedback.edit', $item) }}" class="px-3 py-2 rounded-lg ring-1 ring-gray-300 hover:bg-gray-50 text-sm">Edit</a>
+              
               <form action="{{ route('feedback.destroy', $item) }}" method="POST" onsubmit="return confirm('Delete this feedback?')">
                 @csrf
                 @method('DELETE')

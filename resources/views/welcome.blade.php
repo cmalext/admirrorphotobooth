@@ -380,7 +380,7 @@
               <div class="bg-white text-primary px-4 py-1 rounded-full text-sm font-semibold inline-block mb-4">Most Popular</div>
             @endif
             <h3 class="text-2xl font-bold {{ $textClass }} mb-4">{{ $package->name }}</h3>
-            <div class="text-4xl font-bold {{ $priceClass }} mb-2">${{ number_format($package->price, 2) }}</div>
+            <div class="text-4xl font-bold {{ $priceClass }} mb-2">₱{{ number_format($package->price, 2) }}</div>
             <div class="{{ $subtextClass }}">per event</div>
             @if($package->duration)
               <div class="text-sm {{ $subtextClass }} mt-2">{{ $package->duration }}</div>
@@ -413,7 +413,7 @@
         <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl hover:scale-105 transition-transform duration-300">
           <div class="text-center mb-8">
             <h3 class="text-2xl font-bold text-gray-800 mb-4">Basic</h3>
-            <div class="text-4xl font-bold text-primary mb-2">$299</div>
+            <div class="text-4xl font-bold text-primary mb-2">₱299</div>
             <div class="text-gray-600">per event</div>
           </div>
           <ul class="space-y-4 mb-8">
@@ -428,7 +428,7 @@
           <div class="text-center mb-8">
             <div class="bg-white text-primary px-4 py-1 rounded-full text-sm font-semibold inline-block mb-4">Most Popular</div>
             <h3 class="text-2xl font-bold text-white mb-4">Premium</h3>
-            <div class="text-4xl font-bold text-white mb-2">$499</div>
+            <div class="text-4xl font-bold text-white mb-2">₱499</div>
             <div class="text-white/80">per event</div>
           </div>
           <ul class="space-y-4 mb-8">
@@ -442,7 +442,7 @@
         <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl hover:scale-105 transition-transform duration-300">
           <div class="text-center mb-8">
             <h3 class="text-2xl font-bold text-gray-800 mb-4">Luxury</h3>
-            <div class="text-4xl font-bold text-primary mb-2">$799</div>
+            <div class="text-4xl font-bold text-primary mb-2">₱799</div>
             <div class="text-gray-600">per event</div>
           </div>
           <ul class="space-y-4 mb-8">
@@ -482,91 +482,55 @@
         <svg class="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </button>
       <div id="galleryCarousel" class="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth pb-2">
-        <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-[32%] snap-start">
-          <!-- Wedding Container -->
-          <button onclick="openPublicEventModal('Wedding')" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block w-full text-left animate-slide-in-right">
-            <div class="absolute -top-8 -left-8 w-28 h-28 bg-white/10 rounded-full blur-2xl float-slow"></div>
-            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-black/10 rounded-full blur-2xl float-slow" style="animation-delay:-2s"></div>
-            <video src="image/3.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-              <div class="p-6 text-white">
-                <h3 class="text-lg font-semibold">Wedding Celebration</h3>
-                <p class="text-sm">Beautiful moments captured</p>
-                <div class="flex items-center mt-2">
-                  <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view photos</span>
+        @php
+          $eventsFromPhotos = isset($photosByEvent) && is_array($photosByEvent) ? array_keys($photosByEvent) : [];
+          $featuredOrder = ['Wedding','Corporate Event','Birthday Party','Graduation'];
+          $orderedEvents = array_values(array_unique(array_merge($featuredOrder, $eventsFromPhotos)));
+        @endphp
+        @foreach($orderedEvents as $eventType)
+          <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-[32%] snap-start">
+            <button onclick="openPublicEventModal('{{ $eventType }}')" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block w-full text-left animate-slide-in-right">
+              <div class="absolute -top-8 -left-8 w-28 h-28 bg-white/10 rounded-full blur-2xl float-slow"></div>
+              <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-black/10 rounded-full blur-2xl float-slow" style="animation-delay:-2s"></div>
+              @php
+                $previewRendered = false;
+              @endphp
+              @if($eventType === 'Wedding')
+                <video src="image/3.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
+                @php $previewRendered = true; @endphp
+              @elseif($eventType === 'Corporate Event')
+                <video src="image/2.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
+                @php $previewRendered = true; @endphp
+              @elseif($eventType === 'Birthday Party')
+                <video src="image/1.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
+                @php $previewRendered = true; @endphp
+              @elseif($eventType === 'Graduation')
+                <img src="image/mirror.webp" alt="Graduation" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300" />
+                @php $previewRendered = true; @endphp
+              @endif
+              @if(!$previewRendered)
+                @php
+                  $first = $photosByEvent[$eventType][0] ?? null;
+                  $img = $first ? ($first['image_url'] ?? (isset($first['image_path']) ? '/storage/'.$first['image_path'] : null)) : null;
+                @endphp
+                @if($img)
+                  <img src="{{ $img }}" alt="{{ $eventType }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300" />
+                @else
+                  <img src="/image/image.jpg" alt="{{ $eventType }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300" />
+                @endif
+              @endif
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                <div class="p-6 text-white">
+                  <h3 class="text-lg font-semibold">{{ $eventType }}</h3>
+                  <p class="text-sm">Click to view photos</p>
+                  <div class="flex items-center mt-2">
+                    <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view photos</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </button>
-        </div>
-        <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-[32%] snap-start">
-          <!-- Corporate Container -->
-          <button onclick="openPublicEventModal('Corporate Event')" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block w-full text-left animate-slide-in-right">
-            <div class="absolute -top-8 -left-8 w-28 h-28 bg-white/10 rounded-full blur-2xl float-slow"></div>
-            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-black/10 rounded-full blur-2xl float-slow" style="animation-delay:-2s"></div>
-            <video src="image/2.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-              <div class="p-6 text-white">
-                <h3 class="text-lg font-semibold">Corporate Event</h3>
-                <p class="text-sm">Professional team building</p>
-                <div class="flex items-center mt-2">
-                  <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view photos</span>
-                </div>
-              </div>
-            </div>
-          </button>
-        </div>
-        <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-[32%] snap-start">
-          <!-- Birthday Container -->
-          <button onclick="openPublicEventModal('Birthday Party')" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block w-full text-left animate-slide-in-right">
-            <div class="absolute -top-8 -left-8 w-28 h-28 bg-white/10 rounded-full blur-2xl float-slow"></div>
-            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-black/10 rounded-full blur-2xl float-slow" style="animation-delay:-2s"></div>
-            <video src="image/1.mp4" autoplay muted loop playsinline class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"></video>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-              <div class="p-6 text-white">
-                <h3 class="text-lg font-semibold">Birthday Party</h3>
-                <p class="text-sm">Fun and laughter guaranteed</p>
-                <div class="flex items-center mt-2">
-                  <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view photos</span>
-                </div>
-              </div>
-            </div>
-          </button>
-        </div>
-        <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-[32%] snap-start">
-          <!-- Graduation Container -->
-          <button onclick="openPublicEventModal('Graduation')" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block w-full text-left animate-slide-in-right">
-            <div class="absolute -top-8 -left-8 w-28 h-28 bg-white/10 rounded-full blur-2xl float-slow"></div>
-            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-black/10 rounded-full blur-2xl float-slow" style="animation-delay:-2s"></div>
-            <img src="image/mirror.webp" alt="Graduation" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300" />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-              <div class="p-6 text-white">
-                <h3 class="text-lg font-semibold">Graduation</h3>
-                <p class="text-sm">Achievements worth celebrating</p>
-                <div class="flex items-center mt-2">
-                  <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view photos</span>
-                </div>
-              </div>
-            </div>
-          </button>
-        </div>
-        <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-[32%] snap-start">
-          <!-- Special Event Container -->
-          <button onclick="openPublicEventModal('Other')" class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 block w-full text-left animate-slide-in-right">
-            <div class="absolute -top-8 -left-8 w-28 h-28 bg-white/10 rounded-full blur-2xl float-slow"></div>
-            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-black/10 rounded-full blur-2xl float-slow" style="animation-delay:-2s"></div>
-            <img src="image/image.jpg" alt="Special Event" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300" />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-              <div class="p-6 text-white">
-                <h3 class="text-lg font-semibold">Special Event</h3>
-                <p class="text-sm">Unique moments and occasions</p>
-                <div class="flex items-center mt-2">
-                  <span class="text-xs bg-primary/80 px-2 py-1 rounded-full">Click to view photos</span>
-                </div>
-              </div>
-            </div>
-          </button>
-        </div>
+            </button>
+          </div>
+        @endforeach
       </div>
     </div>
 
@@ -652,9 +616,15 @@
       </div>
     </div>
     <div class="mt-10 text-center">
-      <button onclick="openFeedbackModal()" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-primary via-secondary to-accent text-white font-semibold hover:shadow-lg transition-all">
-        <i class="fas fa-pen"></i>
-        Give Feedback
+      <button onclick="openFeedbackOverviewModal()" class="group relative overflow-hidden inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-primary via-secondary to-accent text-white font-bold text-lg hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-500">
+        <div class="relative z-10 flex items-center gap-3">
+          <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+            <i class="fas fa-comments text-xl group-hover:rotate-12 transition-transform duration-300"></i>
+          </div>
+          <span>View Client Feedback</span>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-r from-accent via-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="absolute inset-0 bg-white/20 rounded-2xl blur-xl scale-0 group-hover:scale-100 transition-transform duration-500"></div>
       </button>
     </div>
   </div>
@@ -904,6 +874,85 @@
   </div>
  </div>
 
+<!-- Feedback Overview Modal -->
+<div id="feedbackOverviewModal" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+  <div class="relative min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+      <div class="flex items-center justify-between p-6 border-b border-gray-200">
+        <div>
+          <h3 class="text-2xl font-bold text-gray-900">Client Feedback Overview</h3>
+          <p class="text-gray-600 mt-1">See what our clients are saying about us</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="openFeedbackModal(); closeFeedbackOverviewModal()" class="group relative overflow-hidden inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary via-secondary to-accent text-white font-semibold text-sm hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+            <div class="relative z-10 flex items-center gap-2">
+              <i class="fas fa-pen text-sm group-hover:rotate-12 transition-transform duration-300"></i>
+              <span>Give Feedback</span>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-r from-accent via-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </button>
+          <button onclick="closeFeedbackOverviewModal()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+      
+      <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+        <!-- Loading State -->
+        <div id="feedbackLoading" class="text-center py-12">
+          <div class="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-gradient-to-r from-primary to-secondary">
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Loading feedback...
+          </div>
+        </div>
+        
+        <!-- Empty State -->
+        <div id="feedbackEmpty" class="hidden text-center py-12">
+          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">No Feedback Yet</h3>
+          <p class="text-gray-600">Be the first to share your experience with us!</p>
+          <button onclick="closeFeedbackOverviewModal(); openFeedbackModal()" class="group relative overflow-hidden inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-primary via-secondary to-accent text-white font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 mt-4">
+            <div class="relative z-10 flex items-center gap-2">
+              <i class="fas fa-pen text-sm group-hover:rotate-12 transition-transform duration-300"></i>
+              <span>Give Feedback</span>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-r from-accent via-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </button>
+        </div>
+        
+        <!-- Feedback List -->
+        <div id="feedbackList" class="hidden space-y-6">
+          <!-- Feedback items will be populated here -->
+        </div>
+        
+        <!-- Give Feedback CTA -->
+        <div id="feedbackCTA" class="hidden text-center py-8 border-t border-gray-200 mt-8">
+          <h4 class="text-lg font-semibold text-gray-900 mb-3">Share Your Experience</h4>
+          <p class="text-gray-600 mb-4">Help others by sharing your feedback about our photo booth service</p>
+          <button onclick="closeFeedbackOverviewModal(); openFeedbackModal()" class="group relative overflow-hidden inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-primary via-secondary to-accent text-white font-bold text-lg hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-500">
+            <div class="relative z-10 flex items-center gap-3">
+              <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                <i class="fas fa-pen text-xl group-hover:rotate-12 transition-transform duration-300"></i>
+              </div>
+              <span>Give Feedback</span>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-r from-accent via-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="absolute inset-0 bg-white/20 rounded-2xl blur-xl scale-0 group-hover:scale-100 transition-transform duration-500"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="publicEventModal" class="fixed inset-0 z-50 hidden">
   <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
   <div class="relative min-h-screen flex items-center justify-center p-4">
@@ -984,6 +1033,112 @@
     if (e.target === modal) closeFeedbackModal();
   });
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeFeedbackModal(); });
+
+  // Feedback overview modal controls
+  function openFeedbackOverviewModal(){ 
+    document.getElementById('feedbackOverviewModal').classList.remove('hidden');
+    loadFeedbackData();
+  }
+  function closeFeedbackOverviewModal(){ 
+    document.getElementById('feedbackOverviewModal').classList.add('hidden');
+  }
+  document.addEventListener('click', (e) => {
+    const modal = document.getElementById('feedbackOverviewModal');
+    if (!modal) return;
+    if (e.target === modal) closeFeedbackOverviewModal();
+  });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeFeedbackOverviewModal(); });
+
+  // Load feedback data
+  async function loadFeedbackData() {
+    const loading = document.getElementById('feedbackLoading');
+    const empty = document.getElementById('feedbackEmpty');
+    const list = document.getElementById('feedbackList');
+    const cta = document.getElementById('feedbackCTA');
+    
+    // Show loading state
+    loading.classList.remove('hidden');
+    empty.classList.add('hidden');
+    list.classList.add('hidden');
+    cta.classList.add('hidden');
+    
+    try {
+      const response = await fetch('/feedback/overview');
+      const feedback = await response.json();
+      
+      if (feedback.length === 0) {
+        loading.classList.add('hidden');
+        empty.classList.remove('hidden');
+        return;
+      }
+      
+      // Hide loading and show feedback list
+      loading.classList.add('hidden');
+      list.classList.remove('hidden');
+      cta.classList.remove('hidden');
+      
+      // Populate feedback list
+      list.innerHTML = feedback.map(item => `
+        <div class="bg-gray-50 rounded-xl p-6 border border-gray-200 hover:shadow-lg transition-all duration-300">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold text-lg">
+                ${item.name.charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-900">${item.name}</h4>
+                <p class="text-sm text-gray-500">${item.email || 'Anonymous'}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-1">
+              ${generateStars(item.rating)}
+            </div>
+          </div>
+          <p class="text-gray-700 leading-relaxed">"${item.comment}"</p>
+          <div class="mt-4 text-xs text-gray-400">
+            ${new Date(item.created_at).toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (error) {
+      console.error('Error loading feedback:', error);
+      loading.classList.add('hidden');
+      empty.classList.remove('hidden');
+      document.getElementById('feedbackEmpty').innerHTML = `
+        <div class="text-center py-12">
+          <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">Error Loading Feedback</h3>
+          <p class="text-gray-600">Something went wrong. Please try again later.</p>
+          <button onclick="loadFeedbackData()" class="mt-4 inline-flex items-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-medium hover:shadow-lg transition-all">
+            <i class="fas fa-redo"></i>
+            Retry
+          </button>
+        </div>
+      `;
+    }
+  }
+
+  // Generate star rating display
+  function generateStars(rating) {
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars += '<i class="fas fa-star text-amber-400"></i>';
+      } else {
+        stars += '<i class="far fa-star text-gray-300"></i>';
+      }
+    }
+    return stars;
+  }
 
   // Star rating logic
   (function(){
@@ -1234,6 +1389,12 @@
     }
     // Add loading animation
     document.body.classList.add('loaded');
+
+    // Auto-open feedback modal on redirect with status/errors
+    try {
+      const shouldOpen = {{ session('openFeedback', false) ? 'true' : 'false' }};
+      if (shouldOpen) { openFeedbackModal(); }
+    } catch (e) {}
   });
 
   // Utility functions

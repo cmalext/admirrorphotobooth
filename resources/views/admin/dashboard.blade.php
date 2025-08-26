@@ -105,7 +105,7 @@
                         <span class="inline-flex w-5"><svg class="w-5 h-5 text-accent" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 012 0v5h4a1 1 0 010 2h-4v5a1 1 0 11-2 0V9H5a1 1 0 010-2h4V2z"/></svg></span>
                         Pins
                     </a>
-                    <a href="#stats" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 text-gray-700">
+                    <a href="{{ route('stats.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 text-gray-700">
                         <span class="inline-flex w-5"><svg class="w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="currentColor"><path d="M3 10a1 1 0 011-1h2v6H4a1 1 0 01-1-1v-4zm6-4a1 1 0 00-1 1v10h4V7a1 1 0 00-1-1H9zm6 6a1 1 0 00-1 1v4h2a1 1 0 001-1v-3a1 1 0 00-1-1h-1z"/></svg></span>
                         Stats
                     </a>
@@ -114,6 +114,35 @@
             </div>
         </aside>
         <main class="flex-1 space-y-8">
+        <!-- Welcome Hero with Parallax -->
+        <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/90 via-amber-50/70 to-orange-50/70 ring-1 ring-primary/10 shadow-xl p-8">
+            <!-- Local parallax accents -->
+            <div class="pointer-events-none select-none">
+                <div class="parallax-element absolute -top-8 -left-8 w-40 h-40 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-3xl opacity-70" data-speed="0.08"></div>
+                <div class="parallax-element absolute -bottom-10 -right-10 w-56 h-56 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 blur-3xl opacity-60" data-speed="0.12"></div>
+                <div class="mouse-parallax absolute top-8 right-8 w-16 h-16 rounded-xl bg-gradient-to-br from-secondary/20 to-accent/20 blur-xl" data-mouse-speed="18"></div>
+            </div>
+
+            <div class="relative z-10 flex flex-col md:flex-row items-center gap-6">
+                <div class="flex-1">
+                    <h1 class="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                        Welcome back, {{ auth()->user()->name }}
+                    </h1>
+                    <p class="mt-2 text-sm text-gray-600">Here’s what’s happening with your mirror photo booth business today.</p>
+                    <div class="mt-4 flex flex-wrap gap-2 text-xs">
+                        <span class="px-3 py-1 rounded-full bg-primary/10 text-primary ring-1 ring-primary/20">Dashboard</span>
+                        <span class="px-3 py-1 rounded-full bg-secondary/10 text-secondary ring-1 ring-secondary/20">Analytics</span>
+                        <span class="px-3 py-1 rounded-full bg-accent/10 text-accent ring-1 ring-accent/20">Operations</span>
+                    </div>
+                </div>
+                <div class="shrink-0 relative">
+                    <div class="relative w-28 h-28 md:w-32 md:h-32 rounded-2xl bg-white/70 backdrop-blur ring-1 ring-gray-200 flex items-center justify-center shadow-lg">
+                        <img src="/image/nalbu.png" alt="AD Logo" class="w-20 h-20 object-contain">
+                        <div class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-gradient-to-br from-primary to-secondary animate-pulse"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <div id="stats" class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-white/80 backdrop-blur ring-1 ring-primary/10 rounded-xl shadow-xl p-6 flex items-center gap-4 tilt glow animate-on-scroll">
                 <div class="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
@@ -163,7 +192,7 @@
                     <p class="text-sm text-gray-600 mb-4">“Manage client feedback, ratings, and service rates”.</p>
                     <div class="flex gap-2">
                         <a href="{{ route('feedback.index') }}" class="px-3 py-2 rounded-lg ring-1 ring-gray-300 hover:bg-gray-50 text-sm">Manage Feedback</a>
-                        <a href="#" class="px-3 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white text-sm">View Public Feedback</a>
+                        <a href="/" target="_blank" class="px-3 py-2 rounded-lg bg-gradient-to-r from-primary via-secondary to-accent text-white text-sm">View Public Feedback</a>
                     </div>
                 </div>
                 <div class="rounded-xl ring-1 ring-gray-200 p-5 bg-gradient-to-br from-white to-secondary/5 tilt">
@@ -196,29 +225,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="relative overflow-hidden rounded-2xl ring-1 ring-gray-200 bg-white tilt">
-                    <img src="/image/mirror.webp" alt="360 Booth" class="w-full h-40 object-cover">
-                    <div class="p-4">
-                        <div class="font-semibold">360 Booth</div>
-                        <p class="text-sm text-gray-600">Immersive slow-motion spins with instant sharing.</p>
-                    </div>
-                </div>
-                <div class="relative overflow-hidden rounded-2xl ring-1 ring-gray-200 bg-white tilt">
-                    <img src="/image/image.jpg" alt="Selfie Booth" class="w-full h-40 object-cover">
-                    <div class="p-4">
-                        <div class="font-semibold">Selfie Booth</div>
-                        <p class="text-sm text-gray-600">Compact setup, studio lighting, branded overlays.</p>
-                    </div>
-                </div>
-                <div class="relative overflow-hidden rounded-2xl ring-1 ring-gray-200 bg-white tilt">
-                    <img src="/image/wedding3.jpg" alt="Glam Booth" class="w-full h-40 object-cover">
-                    <div class="p-4">
-                        <div class="font-semibold">Glam Booth</div>
-                        <p class="text-sm text-gray-600">Monochrome glam with skin-smoothing filters.</p>
-                    </div>
-                </div>
-            </div>
+            
         </section>
 
         </main>

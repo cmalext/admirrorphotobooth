@@ -7,10 +7,12 @@ use App\Http\Controllers\PinController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\StatsController;
 
 Route::get('/', [PackageController::class, 'publicPackages']);
 // Public feedback submission
 Route::post('/feedback', [FeedbackController::class, 'storePublic'])->name('feedback.storePublic');
+Route::get('/feedback/overview', [FeedbackController::class, 'getPublicFeedback'])->name('feedback.getPublic');
 
 Route::get('/gallery/wedding', function () {
     return view('gallery.wedding-gallery');
@@ -33,11 +35,13 @@ Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.
 Route::middleware('auth')->group(function () {
     // Feedback management
     Route::get('/admin/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
-    Route::get('/admin/feedback/{feedback}/edit', [FeedbackController::class, 'edit'])->name('feedback.edit');
-    Route::put('/admin/feedback/{feedback}', [FeedbackController::class, 'update'])->name('feedback.update');
     Route::delete('/admin/feedback/{feedback}', [FeedbackController::class, 'destroy'])->name('feedback.destroy');
     Route::get('/dashboard', [AdminAuthController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+    
+    // Stats
+    Route::get('/admin/stats', [StatsController::class, 'index'])->name('stats.index');
+    Route::get('/admin/stats/data', [StatsController::class, 'getStatsData'])->name('stats.data');
 
     // Messages (admin)
     Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');

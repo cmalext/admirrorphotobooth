@@ -13,28 +13,6 @@ class FeedbackController extends Controller
         return view('admin.feedback.index', compact('feedback'));
     }
 
-    public function edit(Feedback $feedback)
-    {
-        return view('admin.feedback.edit', compact('feedback'));
-    }
-
-    public function update(Request $request, Feedback $feedback)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255',
-            'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'nullable|string',
-            'is_approved' => 'boolean',
-        ]);
-
-        $validated['is_approved'] = $request->has('is_approved');
-
-        $feedback->update($validated);
-
-        return redirect()->route('feedback.index')->with('success', 'Feedback updated');
-    }
-
     public function destroy(Feedback $feedback)
     {
         $feedback->delete();
@@ -59,7 +37,18 @@ class FeedbackController extends Controller
             'is_approved' => true,
         ]);
 
-        return back()->with('status', 'Thank you for your feedback!');
+        return redirect('/')->with('status', 'Thank you for your feedback!')->with('openFeedback', true);
+    }
+
+    // Public feedback overview
+    public function getPublicFeedback()
+    {
+        $feedback = Feedback::where('is_approved', true)
+                           ->orderByDesc('created_at')
+                           ->limit(20)
+                           ->get();
+        
+        return response()->json($feedback);
     }
 }
 

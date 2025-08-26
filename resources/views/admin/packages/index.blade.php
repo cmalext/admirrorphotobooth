@@ -126,7 +126,7 @@
                                 <div class="bg-white rounded-lg p-3 border border-blue-200">
                                     <div class="flex items-center justify-between mb-2">
                                         <h5 class="font-medium text-blue-900 text-sm">{{ $package->name }}</h5>
-                                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">${{ number_format($package->price, 2) }}</span>
+                                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">₱{{ number_format($package->price, 2) }}</span>
                                     </div>
                                     <p class="text-xs text-blue-700 mb-2">{{ $package->description }}</p>
                                     <div class="flex gap-2">
@@ -157,7 +157,7 @@
                                     </div>
                                 @endif
 
-                                <div class="text-2xl font-bold text-primary mb-4">${{ number_format($package->price, 2) }}</div>
+                                <div class="text-2xl font-bold text-primary mb-4">₱{{ number_format($package->price, 2) }}</div>
 
                                 @if($package->features && is_array($package->features) && count($package->features) > 0)
                                     <div class="space-y-2 mb-4">

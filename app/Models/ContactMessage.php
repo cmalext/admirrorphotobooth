@@ -9,6 +9,8 @@ class ContactMessage extends Model
 {
     use HasFactory;
 
+    protected $table = 'contact_messages';
+    
     protected $fillable = [
         'first_name',
         'last_name',
@@ -18,7 +20,6 @@ class ContactMessage extends Model
         'message',
         'admin_note',
         'is_pinned',
-        'contact_message',
     ];
 }
 
