@@ -8,6 +8,7 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\StatsController;
+use App\Http\Controllers\ContactInfoController;
 
 Route::get('/', [PackageController::class, 'publicPackages']);
 // Public feedback submission
@@ -69,6 +70,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/photos/{photo}', [PhotoController::class, 'destroy'])->name('photos.destroy');
     Route::post('/photos/{photo}/toggle-status', [PhotoController::class, 'toggleStatus'])->name('photos.toggle-status');
     Route::post('/photos/reorder', [PhotoController::class, 'reorder'])->name('photos.reorder');
+
+    // Contact Info
+    Route::get('/admin/contact-info/edit', [ContactInfoController::class, 'edit'])->name('contact-info.edit');
+    Route::put('/admin/contact-info', [ContactInfoController::class, 'update'])->name('contact-info.update');
 });
 
 

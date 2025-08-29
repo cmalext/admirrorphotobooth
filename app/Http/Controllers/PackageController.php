@@ -107,6 +107,12 @@ class PackageController extends Controller
         foreach ($eventTypes as $type) {
             $photosByEvent[$type] = Photo::active()->byEventType($type)->ordered()->get();
         }
-        return view('welcome', compact('packages', 'eventTypes', 'photosByEvent'));
+        // Load contact info stored by admin
+        $contactInfoPath = storage_path('app/contact_info.json');
+        $contactInfo = [];
+        if (file_exists($contactInfoPath)) {
+            $contactInfo = json_decode(@file_get_contents($contactInfoPath), true) ?? [];
+        }
+        return view('welcome', compact('packages', 'eventTypes', 'photosByEvent', 'contactInfo'));
     }
 }

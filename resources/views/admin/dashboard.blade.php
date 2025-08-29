@@ -107,7 +107,11 @@
                     </a>
                     <a href="{{ route('stats.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 text-gray-700">
                         <span class="inline-flex w-5"><svg class="w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="currentColor"><path d="M3 10a1 1 0 011-1h2v6H4a1 1 0 01-1-1v-4zm6-4a1 1 0 00-1 1v10h4V7a1 1 0 00-1-1H9zm6 6a1 1 0 00-1 1v4h2a1 1 0 001-1v-3a1 1 0 00-1-1h-1z"/></svg></span>
-                        Stats
+                        Status
+                    </a>
+                     <a href="{{ route('contact-info.edit') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/5 text-gray-700">
+                        <span class="inline-flex w-5"><svg class="w-5 h-5 text-secondary" viewBox="0 0 20 20" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zM20 8h-4v2h4V8zm0 4h-4v2h4v-2z"/></svg></span>
+                        Contact Information
                     </a>
                     
                 </nav>

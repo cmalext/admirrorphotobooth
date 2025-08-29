@@ -716,7 +716,13 @@
             </div>
             <div>
               <div class="font-semibold">Phone</div>
-              <div class="text-gray-300">(555) 123-4567</div>
+              <div class="text-gray-300">
+                @if (!empty($contactInfo['phone']))
+                  <a href="tel:{{ $contactInfo['phone'] }}" class="hover:underline">{{ $contactInfo['phone'] }}</a>
+                @else
+                  (555) 123-4567
+                @endif
+              </div>
             </div>
           </div>
           
@@ -726,7 +732,13 @@
             </div>
             <div>
               <div class="font-semibold">Email</div>
-              <div class="text-gray-300">info@snapshotstudio.com</div>
+              <div class="text-gray-300">
+                @if (!empty($contactInfo['email']))
+                  <a href="mailto:{{ $contactInfo['email'] }}" class="hover:underline">{{ $contactInfo['email'] }}</a>
+                @else
+                  info@snapshotstudio.com
+                @endif
+              </div>
             </div>
           </div>
           
@@ -736,7 +748,13 @@
             </div>
             <div>
               <div class="font-semibold">Location</div>
-              <div class="text-gray-300">123 Photo Street, City, State 12345</div>
+              @if (!empty($contactInfo['address']))
+                <a href="https://maps.google.com/?q={{ urlencode($contactInfo['address']) }}" target="_blank" class="text-gray-300 hover:underline">
+                  {{ $contactInfo['address'] }}
+                </a>
+              @else
+                <div class="text-gray-300">123 Photo Street, City, State 12345</div>
+              @endif
             </div>
           </div>
         </div>
@@ -784,15 +802,7 @@
         </ul>
       </div>
       
-      <div>
-        <h4 class="text-lg font-semibold mb-4">Company</h4>
-        <ul class="space-y-2 text-gray-300">
-          <li><a href="#" class="hover:text-primary transition-colors">About Us</a></li>
-          <li><a href="#" class="hover:text-primary transition-colors">Our Team</a></li>
-          <li><a href="#" class="hover:text-primary transition-colors">Careers</a></li>
-          <li><a href="#" class="hover:text-primary transition-colors">Privacy Policy</a></li>
-        </ul>
-      </div>
+      
       
       <div>
         <h4 class="text-lg font-semibold mb-4">Newsletter</h4>

@@ -56,5 +56,12 @@ class DatabaseSeeder extends Seeder
             'comment' => 'Perfect for our wedding! The photos captured so many special moments and the quality exceeded our expectations.',
             'is_approved' => true,
         ]);
+
+       
+        \App\Models\User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@admin.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('password'), 
+        ]);
     }
 }
